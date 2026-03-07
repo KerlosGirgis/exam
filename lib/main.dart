@@ -1,3 +1,4 @@
+import 'package:exam/core/theme_manager.dart';
 import 'package:exam/core/utils/router/app_routes.dart';
 import 'package:exam/core/utils/router/router.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +14,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: AppRoutes.splash,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeManager.light,
+      themeMode: ThemeMode.light,
+      initialRoute: AppRoutes.resetPasswordScreen,
       onGenerateRoute: (settings) => RoutesManager.router(settings),
-      home: Text('Home'),
     );
   }
 }
