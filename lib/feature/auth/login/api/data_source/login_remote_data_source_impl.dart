@@ -18,13 +18,12 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
       ) async {
 
     final response = await dio.post(
-      "/auth/login",
+      "/auth/signin",
       data: {
         "email": email,
         "password": password,
       },
     );
-
     return LoginResponseModel.fromJson(response.data);
   }
 }

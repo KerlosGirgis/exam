@@ -1,8 +1,11 @@
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bloc/bloc.dart';
+import 'package:injectable/injectable.dart';
+
 import '../../domain/usecases/login_usecase.dart';
 import 'login_event.dart';
 import 'login_state.dart';
 
+@injectable
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final LoginUseCase loginUseCase;
 
@@ -18,16 +21,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     emit(LoginLoading());
 
     try {
-      final result = await loginUseCase(
+      await loginUseCase(
         event.email,
         event.password,
       );
-
-      final user = result.$1;
-      final token = result.$2;
-
-      // save token later
-
       emit(LoginSuccess());
 
     } catch (e) {
