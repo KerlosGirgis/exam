@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:exam/core/constant/end_point.dart';
 import 'package:injectable/injectable.dart';
 import '../../data/models/login_response_model.dart';
 import '../../data/datasources/login_remote_data_source.dart';
@@ -18,7 +19,7 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
       ) async {
 
     final response = await dio.post(
-      "/auth/signin",
+      EndPoint.loginUrl,
       data: {
         "email": email,
         "password": password,
