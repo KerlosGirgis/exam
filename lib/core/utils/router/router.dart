@@ -4,6 +4,12 @@ import 'package:exam/feature/auth/forget_password/presentation/screens/login.dar
 import 'package:exam/feature/auth/forget_password/presentation/screens/reset_password_screen.dart';
 import 'package:exam/feature/auth/forget_password/presentation/screens/verification_code_screen.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../config/di/di.dart';
+import '../../../feature/auth/login/presentation/Bloc/login_bloc.dart';
+import '../../../feature/auth/login/presentation/screens/login_screen.dart';
+import 'app_routes.dart';
 
 class RoutesManager {
   static Route? router(RouteSettings settings) {
@@ -28,12 +34,17 @@ class RoutesManager {
             builder: (context) => ResetPasswordScreen(email: email),
           );
         }
-      case AppRoutes.login:
-        {
-          return CupertinoPageRoute(builder: (context) => Login());
-        }
-      default:
-        return null;
+       case AppRoutes.login:
+          {
+            return CupertinoPageRoute(
+              builder: (context) => BlocProvider(
+                create: (_) => getIt<LoginBloc>(),
+                child: const LoginScreen(),
+              ),
+            );
+          }
+
+        default:
     }
   }
 }

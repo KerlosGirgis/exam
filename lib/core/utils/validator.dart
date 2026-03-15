@@ -10,11 +10,11 @@ class FormValidator {
   static String? validatePassword(String? password) {
     if (password == null || password.isEmpty) return 'Password is required';
 
-    final regex = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$');
+    // final regex = RegExp(r'^(?=.[A-Za-z])(?=.\d)(?=.*[^A-Za-z\d]).{8,}$');
 
-    if (!regex.hasMatch(password)) {
-      return 'Password must be at least 8 characters, include a number, a letter, and a special character';
-    }
+    // if (!regex.hasMatch(password)) {
+    //   return 'Password must be at least 8 characters, include a number, a letter, and a special character';
+    // }
 
     return null;
   }

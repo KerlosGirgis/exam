@@ -1,4 +1,3 @@
-import 'package:exam/core/utils/color_manager.dart';
 import 'package:flutter/material.dart';
 
 AppBar buildAppBar(BuildContext context, {required String title}) {

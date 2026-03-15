@@ -8,6 +8,8 @@ import 'package:exam/feature/auth/forget_password/presentation/view_model/cubit/
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'config/di/di.dart';
+
 void main() {
   configureDependencies();
   runApp(const MyApp());
@@ -19,25 +21,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<ForgetPasswordCubit>(
-          create: (context) => getIt<ForgetPasswordCubit>(),
-        ),
-        BlocProvider<VerificationCubit>(
-          create: (context) => getIt<VerificationCubit>(),
-        ),
-        BlocProvider<ResetPasswordCubit>(
-          create: (context) => getIt<ResetPasswordCubit>(),
-        ),
-      ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeManager.light,
-        themeMode: ThemeMode.light,
-        initialRoute: AppRoutes.forgetPasswordScreen,
-        onGenerateRoute: (settings) => RoutesManager.router(settings),
-      ),
+    return MaterialApp(
+      theme: ThemeManager.light,
+      initialRoute: AppRoutes.login,
+      onGenerateRoute: (settings) => RoutesManager.router(settings),
+      home: Text('Home'),
     );
   }
 }

@@ -1,9 +1,10 @@
-import 'package:exam/core/constant/end_point.dart';
-import 'package:injectable/injectable.dart';
 import 'package:dio/dio.dart';
+import 'package:injectable/injectable.dart';
+
+import '../../core/constant/end_point.dart';
 
 @module
-abstract class ExternalOperationsModule {
+abstract class DioModule {
   @singleton
   Dio get dio => Dio(
     BaseOptions(

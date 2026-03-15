@@ -4,4 +4,5 @@ abstract class EndPoint {
   static const String forgetPassword = '${baseUrl}auth/forgotPassword';
   static const String verifyResetCode = '${baseUrl}auth/verifyResetCode';
   static const String resetPassword = '${baseUrl}auth/resetPassword';
+  static const String loginUrl = 'auth/signin';
 }
