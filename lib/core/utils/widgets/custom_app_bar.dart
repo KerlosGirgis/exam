@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 AppBar buildAppBar(BuildContext context, {required String title}) {
   return AppBar(
-    backgroundColor: Colors.white,
+    backgroundColor: ColorManager.whiteColor,
     elevation: 0,
     centerTitle: false,
     titleSpacing: 0,
