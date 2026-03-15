@@ -1,8 +1,12 @@
+import 'package:exam/core/theme_manager.dart';
 import 'package:exam/core/utils/router/app_routes.dart';
 import 'package:exam/core/utils/router/router.dart';
 import 'package:flutter/material.dart';
 
+import 'config/di/di.dart';
+
 void main() {
+  configureDependencies();
   runApp(const MyApp());
 }
 
@@ -13,7 +17,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: AppRoutes.splash,
+      theme: ThemeManager.light,
+      initialRoute: AppRoutes.login,
       onGenerateRoute: (settings) => RoutesManager.router(settings),
       home: Text('Home'),
     );
