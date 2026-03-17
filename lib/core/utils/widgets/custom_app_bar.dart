@@ -10,7 +10,7 @@ AppBar buildAppBar(BuildContext context, {required String title}) {
     title: Text(title, textAlign: TextAlign.start),
     leading: IconButton(
       icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
-      onPressed: () {},
+      onPressed: () => Navigator.of(context).pop(),
     ),
   );
 }
