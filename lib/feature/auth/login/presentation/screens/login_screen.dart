@@ -1,4 +1,5 @@
 import 'package:exam/core/utils/color_manager.dart';
+import 'package:exam/core/utils/router/app_routes.dart';
 import 'package:exam/core/utils/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -118,7 +119,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  //ToDo navigate to forgot password screen
+                                  Navigator.pushNamed(context, AppRoutes.forgetPasswordScreen);
                                 },
                                 child: const Text(
                                   "Forgot Password?",

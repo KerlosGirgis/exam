@@ -1,9 +1,9 @@
+import 'package:exam/config/di/di.dart';
 import 'package:exam/core/theme_manager.dart';
 import 'package:exam/core/utils/router/app_routes.dart';
 import 'package:exam/core/utils/router/router.dart';
 import 'package:flutter/material.dart';
 
-import 'config/di/di.dart';
 
 void main() {
   configureDependencies();
@@ -20,7 +20,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeManager.light,
       initialRoute: AppRoutes.login,
       onGenerateRoute: (settings) => RoutesManager.router(settings),
-      home: Text('Home'),
     );
   }
 }
