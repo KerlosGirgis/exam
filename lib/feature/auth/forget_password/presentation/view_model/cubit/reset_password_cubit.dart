@@ -37,10 +37,10 @@ class ResetPasswordCubit extends Cubit<ResetPasswordState> {
     final response = await _useCase(email: email, newPassword: newPassword);
 
     switch (response) {
-      case SuccessBaseResponse<ResetPasswordModel>():
+      case SuccessResponse<ResetPasswordModel>():
         emit(state.copyWith(isLoading: false, isSuccess: true));
         break;
-      case ErrorBaseResponse<ResetPasswordModel>():
+      case ErrorResponse<ResetPasswordModel>():
         emit(
           state.copyWith(isLoading: false, errorMessage: response.errorMessage),
         );
