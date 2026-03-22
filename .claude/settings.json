@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(flutter run:*)",
+      "Bash(dart run:*)",
+      "Read(//e/vsc_flutter_pructs/exam/lib/feature/auth/register/presentation/viewModel/**)",
+      "Read(//e/vsc_flutter_pructs/exam/lib/feature/auth/register/data/repo/**)"
+    ],
+    "additionalDirectories": [
+      "e:\\vsc_flutter_prjects\\exam\\lib\\feature\\auth\\register\\data\\model"
+    ]
+  }
+}

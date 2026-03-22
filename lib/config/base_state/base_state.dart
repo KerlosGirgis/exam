@@ -21,4 +21,7 @@ class BaseState<T> {
     );
   }
 
+  bool get isSuccess =>
+      data != null && errorMessage == null && isLoading == false;
+  bool get isError => errorMessage != null && isLoading == false;
 }

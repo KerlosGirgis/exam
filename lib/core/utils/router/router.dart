@@ -2,6 +2,8 @@ import 'package:exam/core/utils/router/app_routes.dart';
 import 'package:exam/feature/auth/forget_password/presentation/screens/forget_password_screen.dart';
 import 'package:exam/feature/auth/forget_password/presentation/screens/reset_password_screen.dart';
 import 'package:exam/feature/auth/forget_password/presentation/screens/verification_code_screen.dart';
+import 'package:exam/core/utils/router/app_routes.dart';
+import 'package:exam/feature/auth/register/presentation/screens/registerScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -83,6 +85,8 @@ class RoutesManager {
             ),
           );
         }
+        case AppRoutes.register:
+        return CupertinoPageRoute(builder: (context) => const Registerscreen());
 
       default:
         return null;
