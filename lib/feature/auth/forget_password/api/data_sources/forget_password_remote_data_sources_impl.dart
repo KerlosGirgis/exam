@@ -23,18 +23,18 @@ class ForgetPasswordRemoteDataSourcesImpl
       final response = await forgetPasswordApiClient.forgetPassword(
         body: {ApiParam.email: email},
       );
-      return SuccessBaseResponse<ForgetPasswordDto>(data: response);
+      return SuccessResponse<ForgetPasswordDto>(data: response);
     } catch (e) {
       if (e is DioException) {
-        return ErrorBaseResponse<ForgetPasswordDto>(
+        return ErrorResponse<ForgetPasswordDto>(
           errorMessage: e.message ?? 'Dio Exception',
         );
       } else if (e is TimeoutException) {
-        return ErrorBaseResponse<ForgetPasswordDto>(
+        return ErrorResponse<ForgetPasswordDto>(
           errorMessage: e.message ?? 'Request Time out ,Please try again later',
         );
       }
-      return ErrorBaseResponse<ForgetPasswordDto>(
+      return ErrorResponse<ForgetPasswordDto>(
         errorMessage: 'Something went wrong ,Please try again later',
       );
     }
@@ -48,14 +48,14 @@ class ForgetPasswordRemoteDataSourcesImpl
       final response = await forgetPasswordApiClient.verifyResetCode(
         body: {"resetCode": resetCode},
       );
-      return SuccessBaseResponse<VerifyResetCodeDto>(data: response);
+      return SuccessResponse<VerifyResetCodeDto>(data: response);
     } catch (e) {
       if (e is DioException) {
-        return ErrorBaseResponse<VerifyResetCodeDto>(
+        return ErrorResponse<VerifyResetCodeDto>(
           errorMessage: e.response?.data['message'] ?? 'Invalid Code',
         );
       }
-      return ErrorBaseResponse<VerifyResetCodeDto>(
+      return ErrorResponse<VerifyResetCodeDto>(
         errorMessage: 'Something went wrong',
       );
     }
@@ -70,18 +70,18 @@ class ForgetPasswordRemoteDataSourcesImpl
       final response = await forgetPasswordApiClient.resetPassword(
         body: {ApiParam.email: email, ApiParam.newPassword: newPassword},
       );
-      return SuccessBaseResponse<ResetPasswordDto>(data: response);
+      return SuccessResponse<ResetPasswordDto>(data: response);
     } catch (e) {
       if (e is DioException) {
-        return ErrorBaseResponse<ResetPasswordDto>(
+        return ErrorResponse<ResetPasswordDto>(
           errorMessage: e.message ?? 'Dio Exception',
         );
       } else if (e is TimeoutException) {
-        return ErrorBaseResponse<ResetPasswordDto>(
+        return ErrorResponse<ResetPasswordDto>(
           errorMessage: e.message ?? 'Request Time out ,Please try again later',
         );
       }
-      return ErrorBaseResponse<ResetPasswordDto>(
+      return ErrorResponse<ResetPasswordDto>(
         errorMessage: 'Something went wrong ,Please try again later',
       );
     }

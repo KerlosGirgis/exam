@@ -4,8 +4,8 @@ import 'package:exam/feature/auth/register/presentation/widgets/register_body.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Registerscreen extends StatelessWidget {
-  const Registerscreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  const RegisterScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

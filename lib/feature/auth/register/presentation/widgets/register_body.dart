@@ -14,7 +14,7 @@ class RegisterBody extends StatefulWidget {
 
 class _RegisterBodyState extends State<RegisterBody> {
   final _formKey = GlobalKey<FormState>();
-  bool _autoValidate = false;
+  final bool _autoValidate = false;
 
   void _resetForm(BuildContext context) {
     final cubit = context.read<RegisterCubit>();
@@ -23,7 +23,9 @@ class _RegisterBodyState extends State<RegisterBody> {
       setState(() {});
     });
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.of(context).pop();
+      if (context.mounted){
+        Navigator.of(context).pop();
+      }
     });
   }
 

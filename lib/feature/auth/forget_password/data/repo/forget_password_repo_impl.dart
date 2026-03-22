@@ -23,12 +23,12 @@ class ForgetPasswordRepoImpl implements ForgetPasswordRepoContract {
     );
 
     switch (response) {
-      case SuccessBaseResponse<ForgetPasswordDto>():
-        return SuccessBaseResponse<ForgetPasswordModel>(
+      case SuccessResponse<ForgetPasswordDto>():
+        return SuccessResponse<ForgetPasswordModel>(
           data: response.data.toDomain(),
         );
-      case ErrorBaseResponse<ForgetPasswordDto> errorResponse:
-        return ErrorBaseResponse<ForgetPasswordModel>(
+      case ErrorResponse<ForgetPasswordDto> errorResponse:
+        return ErrorResponse<ForgetPasswordModel>(
           errorMessage: errorResponse.errorMessage,
         );
     }
@@ -42,12 +42,12 @@ class ForgetPasswordRepoImpl implements ForgetPasswordRepoContract {
       resetCode: resetCode,
     );
     switch (response) {
-      case SuccessBaseResponse<VerifyResetCodeDto>():
-        return SuccessBaseResponse<VerifyResetCodeModel>(
+      case SuccessResponse<VerifyResetCodeDto>():
+        return SuccessResponse<VerifyResetCodeModel>(
           data: response.data.toDomain(),
         );
-      case ErrorBaseResponse<VerifyResetCodeDto> errorResponse:
-        return ErrorBaseResponse<VerifyResetCodeModel>(
+      case ErrorResponse<VerifyResetCodeDto> errorResponse:
+        return ErrorResponse<VerifyResetCodeModel>(
           errorMessage: errorResponse.errorMessage,
         );
     }
@@ -63,12 +63,12 @@ class ForgetPasswordRepoImpl implements ForgetPasswordRepoContract {
       newPassword: newPassword,
     );
     switch (response) {
-      case SuccessBaseResponse<ResetPasswordDto>():
-        return SuccessBaseResponse<ResetPasswordModel>(
+      case SuccessResponse<ResetPasswordDto>():
+        return SuccessResponse<ResetPasswordModel>(
           data: response.data.toDomain(),
         );
-      case ErrorBaseResponse<ResetPasswordDto> errorResponse:
-        return ErrorBaseResponse<ResetPasswordModel>(
+      case ErrorResponse<ResetPasswordDto> errorResponse:
+        return ErrorResponse<ResetPasswordModel>(
           errorMessage: errorResponse.errorMessage,
         );
     }

@@ -98,7 +98,7 @@ class _RegisterFormState extends State<RegisterForm> {
             controller: viewModel.usernameController,
             keyboardType: TextInputType.name,
             validator: (v) =>
-                Validation.FullNameValidator(v, "Please enter your username"),
+                Validation.fullNameValidator(v, "Please enter your username"),
           ),
           Row(
             children: [
@@ -108,7 +108,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   hintText: AppTextConstants.enterFirstName,
                   controller: viewModel.firstNameController,
                   keyboardType: TextInputType.name,
-                  validator: (v) => Validation.FullNameValidator(
+                  validator: (v) => Validation.fullNameValidator(
                     v,
                     "Please enter your first name",
                   ),
@@ -121,7 +121,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   hintText: AppTextConstants.enterLastName,
                   controller: viewModel.lastNameController,
                   keyboardType: TextInputType.name,
-                  validator: (v) => Validation.FullNameValidator(
+                  validator: (v) => Validation.fullNameValidator(
                     v,
                     "Please enter your last name",
                   ),

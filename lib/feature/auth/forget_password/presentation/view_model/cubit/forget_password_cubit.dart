@@ -30,10 +30,10 @@ class ForgetPasswordCubit extends Cubit<ForgetPasswordState> {
     final response = await _forgetPasswordUseCase(email: emailController.text);
 
     switch (response) {
-      case SuccessBaseResponse<ForgetPasswordModel>():
+      case SuccessResponse<ForgetPasswordModel>():
         emit(state.copyWith(isLoadingParam: false, dataParam: response.data));
         break;
-      case ErrorBaseResponse<ForgetPasswordModel>():
+      case ErrorResponse<ForgetPasswordModel>():
         emit(
           state.copyWith(
             isLoadingParam: false,

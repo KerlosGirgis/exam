@@ -19,7 +19,7 @@ class VerificationCubit extends Cubit<VerificationState> {
     final response = await _useCase(resetCode: code);
 
     switch (response) {
-      case SuccessBaseResponse<VerifyResetCodeModel>():
+      case SuccessResponse<VerifyResetCodeModel>():
         emit(
           state.copyWith(
             isLoadingParam: false,
@@ -28,7 +28,7 @@ class VerificationCubit extends Cubit<VerificationState> {
           ),
         );
         break;
-      case ErrorBaseResponse<VerifyResetCodeModel>():
+      case ErrorResponse<VerifyResetCodeModel>():
         emit(
           state.copyWith(
             isLoadingParam: false,
