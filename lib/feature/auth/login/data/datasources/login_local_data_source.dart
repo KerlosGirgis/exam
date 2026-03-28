@@ -1,5 +1,5 @@
 import 'package:injectable/injectable.dart';
-import '../../../../../core/storage/token_storage.dart';
+import '../../../../../core/storage/secure_storage.dart';
 
 abstract class LoginLocalDataSource {
   Future<void> saveToken(String token);
