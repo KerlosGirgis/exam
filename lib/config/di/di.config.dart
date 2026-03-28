@@ -14,6 +14,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../../core/storage/token_storage.dart' as _i1001;
 import '../../feature/auth/forget_password/api/data_sources/forget_password_remote_data_sources_impl.dart'
     as _i913;
 import '../../feature/auth/forget_password/api/forget_password_api_client/forget_password_api_client.dart'
@@ -79,8 +80,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i493.LoginRemoteDataSource>(
       () => _i359.LoginRemoteDataSourceImpl(gh<_i361.Dio>()),
     );
-    gh.factory<_i51.LoginLocalDataSource>(
-      () => _i51.LoginLocalDataSourceImpl(gh<_i558.FlutterSecureStorage>()),
+    gh.factory<_i1001.SecureStorage>(
+      () => _i1001.SecureStorageImpl(gh<_i558.FlutterSecureStorage>()),
     );
     gh.factory<_i439.ForgetPasswordApiClient>(
       () => _i439.ForgetPasswordApiClient(gh<_i361.Dio>()),
@@ -90,6 +91,9 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i620.RegisterApiService>(
       () => _i620.RegisterApiService(gh<_i361.Dio>()),
+    );
+    gh.factory<_i51.LoginLocalDataSource>(
+      () => _i51.LoginLocalDataSourceImpl(gh<_i1001.SecureStorage>()),
     );
     gh.factory<_i32.ForgetPasswordRemoteDataSourcesContract>(
       () => _i913.ForgetPasswordRemoteDataSourcesImpl(
