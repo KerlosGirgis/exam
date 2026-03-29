@@ -12,8 +12,7 @@ class Validation {
     final bool emailvalid = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
     ).hasMatch(email);
-    final bool isGmail = email.trim().toLowerCase().endsWith('@gmail.com');
-    return emailvalid && !isGmail;
+    return emailvalid;
   }
 
   static String? emailValidation(String? value) {

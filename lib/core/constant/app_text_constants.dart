@@ -1,6 +1,7 @@
 class AppTextConstants {
   AppTextConstants._();
   //for register
+  static const register = "Register";
   static const alreadyHaveAccount = "Already have an account? ";
   static const login = "Login";
   static const signUp = "Sign Up";

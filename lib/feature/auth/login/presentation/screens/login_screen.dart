@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: buildAppBar(context, title: 'Login'),
+      appBar: buildAppBar(context, title: 'Login', showBackButton: false),
       body: BlocListener<LoginBloc, LoginState>(
         listenWhen: (previous, current) =>
             previous.isLoading != current.isLoading ||
@@ -46,13 +46,13 @@ class _LoginScreenState extends State<LoginScreen> {
           }
 
           if (state.isError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(
-              content: Text(state.errorMessage ?? 'An error occurred'),
-              backgroundColor: Colors.red,
-              behavior: SnackBarBehavior.floating,
-            ));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.errorMessage ?? 'An error occurred'),
+                backgroundColor: Colors.red,
+                behavior: SnackBarBehavior.floating,
+              ),
+            );
           }
         },
         child: SingleChildScrollView(
@@ -132,7 +132,10 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  Navigator.pushNamed(context, AppRoutes.forgetPasswordScreen);
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoutes.forgetPasswordScreen,
+                                  );
                                 },
                                 child: const Text(
                                   "Forgot Password?",
@@ -158,9 +161,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: BlocBuilder<LoginBloc, LoginState>(
                           builder: (context, state) {
                             return CustomButton(
-                              title: state.isLoading
-                                  ? 'Loading...'
-                                  : 'Login',
+                              title: state.isLoading ? 'Loading...' : 'Login',
                               onPressed: state.isLoading
                                   ? null
                                   : () {
@@ -192,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        //ToDo navigate to sign up screen
+                        Navigator.pushNamed(context, AppRoutes.register);
                       },
                       child: Text(
                         "Sign Up",
