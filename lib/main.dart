@@ -4,21 +4,31 @@ import 'package:exam/core/utils/router/app_routes.dart';
 import 'package:exam/core/utils/router/router.dart';
 import 'package:flutter/material.dart';
 
+import 'feature/auth/login/data/datasources/login_local_data_source.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
-  runApp(const MyApp());
+  
+  final loginLocalDataSource = getIt<LoginLocalDataSource>();
+  final token = await loginLocalDataSource.getToken();
+  
+  final String initialRoute = token != null ? AppRoutes.navbar : AppRoutes.login;
+  
+  runApp(MyApp(initialRoute: initialRoute));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String initialRoute;
+  
+  const MyApp({super.key, required this.initialRoute});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: ThemeManager.light,
-      initialRoute: AppRoutes.login,
+      initialRoute: initialRoute,
       onGenerateRoute: (settings) => RoutesManager.router(settings),
     );
   }

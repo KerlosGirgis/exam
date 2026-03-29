@@ -12,6 +12,7 @@ import '../../../feature/auth/forget_password/presentation/view_model/cubit/rese
 import '../../../feature/auth/forget_password/presentation/view_model/cubit/verification_cubit.dart';
 import '../../../feature/auth/login/presentation/Bloc/login_bloc.dart';
 import '../../../feature/auth/login/presentation/screens/login_screen.dart';
+import '../../../feature/home/presentation/screens/navbar.dart';
 
 class RoutesManager {
   static Route? router(RouteSettings settings) {
@@ -86,6 +87,8 @@ class RoutesManager {
         }
         case AppRoutes.register:
         return CupertinoPageRoute(builder: (context) => const RegisterScreen());
+        case AppRoutes.navbar:
+        return CupertinoPageRoute(builder: (context) => const NavBar());
 
       default:
         return null;

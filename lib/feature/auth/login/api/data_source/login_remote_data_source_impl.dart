@@ -17,7 +17,6 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
       String email,
       String password,
       ) async {
-
     final response = await dio.post(
       EndPoint.loginUrl,
       data: {
@@ -25,6 +24,7 @@ class LoginRemoteDataSourceImpl implements LoginRemoteDataSource {
         "password": password,
       },
     );
+
     return LoginResponseModel.fromJson(response.data);
   }
 }

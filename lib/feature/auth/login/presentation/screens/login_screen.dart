@@ -21,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  bool _rememberMe = false;
 
   @override
   void dispose() {
@@ -35,15 +36,20 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.white,
       appBar: buildAppBar(context, title: 'Login'),
       body: BlocListener<LoginBloc, LoginState>(
+        listenWhen: (previous, current) =>
+            previous.isLoading != current.isLoading ||
+            previous.errorMessage != current.errorMessage ||
+            previous.data != current.data,
         listener: (context, state) {
-          if (state is LoginSuccess) {
-            //ToDo navigate to home screen
+          if (state.isSuccess) {
+            Navigator.pushNamed(context, AppRoutes.navbar);
           }
 
-          if (state is LoginFailure) {
+          if (state.isError) {
             ScaffoldMessenger.of(
               context,
-            ).showSnackBar(SnackBar(content: Text(state.message),
+            ).showSnackBar(SnackBar(
+              content: Text(state.errorMessage ?? 'An error occurred'),
               backgroundColor: Colors.red,
               behavior: SnackBarBehavior.floating,
             ));
@@ -104,7 +110,14 @@ class _LoginScreenState extends State<LoginScreen> {
                         children: [
                           Row(
                             children: [
-                              Checkbox(value: false, onChanged: (v) {}),
+                              Checkbox(
+                                value: _rememberMe,
+                                onChanged: (v) {
+                                  setState(() {
+                                    _rememberMe = v ?? false;
+                                  });
+                                },
+                              ),
                               const Text(
                                 "Remember Me",
                                 style: TextStyle(fontSize: 17),
@@ -145,22 +158,23 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: BlocBuilder<LoginBloc, LoginState>(
                           builder: (context, state) {
                             return CustomButton(
-                              title: state is LoginLoading
+                              title: state.isLoading
                                   ? 'Loading...'
                                   : 'Login',
-                              onPressed: state is LoginLoading
+                              onPressed: state.isLoading
                                   ? null
                                   : () {
                                       if (_formKey.currentState!.validate()) {
                                         context.read<LoginBloc>().add(
                                           LoginSubmitted(
-                                            _emailController.text,
-                                            _passwordController.text,
+                                            email: _emailController.text,
+                                            password: _passwordController.text,
+                                            rememberMe: _rememberMe,
                                           ),
                                         );
                                       }
                                     },
-                              isEnabled: state is! LoginLoading,
+                              isEnabled: !state.isLoading,
                             );
                           },
                         ),

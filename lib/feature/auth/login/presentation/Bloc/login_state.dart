@@ -1,13 +1,25 @@
-abstract class LoginState {}
+import '../../../../../config/base_state/base_state.dart';
+import '../../domain/entities/user_entity.dart';
 
-class LoginInitial extends LoginState {}
+class LoginState extends BaseState<(User, String)> {
+  LoginState({
+    super.isLoading,
+    super.errorMessage,
+    super.data,
+  });
 
-class LoginLoading extends LoginState {}
+  factory LoginState.initial() => LoginState();
 
-class LoginSuccess extends LoginState {}
-
-class LoginFailure extends LoginState {
-  final String message;
-
-  LoginFailure(this.message);
+  @override
+  LoginState copyWith({
+    bool? isLoadingParam,
+    String? errorMessageParam,
+    (User, String)? dataParam,
+  }) {
+    return LoginState(
+      isLoading: isLoadingParam ?? isLoading,
+      errorMessage: errorMessageParam ?? errorMessage,
+      data: dataParam ?? data,
+    );
+  }
 }
