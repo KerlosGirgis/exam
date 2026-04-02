@@ -14,6 +14,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart' as _i558;
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
+import '../../core/storage/hive_storage.dart' as _i526;
 import '../../core/storage/secure_storage.dart' as _i108;
 import '../../feature/auth/forget_password/api/data_sources/forget_password_remote_data_sources_impl.dart'
     as _i913;
@@ -63,6 +64,20 @@ import '../../feature/auth/register/domain/useCases/register_usecase.dart'
     as _i62;
 import '../../feature/auth/register/presentation/viewModel/register_cubit.dart'
     as _i583;
+import '../../feature/exam/api/data_sources/exam_local_data_source_impl.dart'
+    as _i840;
+import '../../feature/exam/api/data_sources/exam_remote_data_source_impl.dart'
+    as _i589;
+import '../../feature/exam/api/exam_api_client/exam_api_client.dart' as _i922;
+import '../../feature/exam/data/data_sources/exam_local_data_source_contract.dart'
+    as _i1012;
+import '../../feature/exam/data/data_sources/exam_remote_data_source_contract.dart'
+    as _i191;
+import '../../feature/exam/data/repo/exam_repo_impl.dart' as _i94;
+import '../../feature/exam/domain/repo/exam_repo_contract.dart' as _i345;
+import '../../feature/exam/domain/use_cases/get_exam_questions_use_case.dart'
+    as _i43;
+import '../../feature/exam/presentation/Bloc/exam_bloc.dart' as _i635;
 import '../dio/dio_module.dart' as _i977;
 import 'storage_module.dart' as _i371;
 
@@ -80,6 +95,10 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i493.LoginRemoteDataSource>(
       () => _i359.LoginRemoteDataSourceImpl(gh<_i361.Dio>()),
     );
+    gh.factory<_i526.HiveStorage>(() => _i526.HiveStorageImpl());
+    gh.factory<_i1012.ExamLocalDataSourceContract>(
+      () => _i840.ExamLocalDataSourceImpl(),
+    );
     gh.factory<_i108.SecureStorage>(
       () => _i108.SecureStorageImpl(gh<_i558.FlutterSecureStorage>()),
     );
@@ -92,6 +111,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i620.RegisterApiService>(
       () => _i620.RegisterApiService(gh<_i361.Dio>()),
     );
+    gh.factory<_i922.ExamApiClient>(() => _i922.ExamApiClient(gh<_i361.Dio>()));
     gh.factory<_i51.LoginLocalDataSource>(
       () => _i51.LoginLocalDataSourceImpl(gh<_i108.SecureStorage>()),
     );
@@ -124,6 +144,12 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i511.VerifyResetCodeUseCase(gh<_i907.ForgetPasswordRepoContract>()),
     );
+    gh.factory<_i191.ExamRemoteDataSourceContract>(
+      () => _i589.ExamRemoteDataSourceImpl(
+        gh<_i922.ExamApiClient>(),
+        gh<_i108.SecureStorage>(),
+      ),
+    );
     gh.factory<_i777.ForgetPasswordCubit>(
       () => _i777.ForgetPasswordCubit(gh<_i944.ForgetPasswordUseCase>()),
     );
@@ -143,11 +169,26 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1036.ResetPasswordCubit>(
       () => _i1036.ResetPasswordCubit(gh<_i756.ResetPasswordUseCase>()),
     );
+    gh.factory<_i345.ExamRepoContract>(
+      () => _i94.ExamRepoImpl(
+        gh<_i191.ExamRemoteDataSourceContract>(),
+        gh<_i1012.ExamLocalDataSourceContract>(),
+      ),
+    );
+    gh.factory<_i43.GetExamQuestionsUseCase>(
+      () => _i43.GetExamQuestionsUseCase(gh<_i345.ExamRepoContract>()),
+    );
     gh.factory<_i62.RegisterUsecase>(
       () => _i62.RegisterUsecase(gh<_i628.RegisterRepoContract>()),
     );
     gh.factory<_i583.RegisterCubit>(
       () => _i583.RegisterCubit(gh<_i62.RegisterUsecase>()),
+    );
+    gh.factory<_i635.ExamBloc>(
+      () => _i635.ExamBloc(
+        gh<_i43.GetExamQuestionsUseCase>(),
+        gh<_i526.HiveStorage>(),
+      ),
     );
     return this;
   }
