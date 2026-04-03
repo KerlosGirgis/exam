@@ -1,10 +1,15 @@
 import '../../../../config/base_state/base_state.dart';
 import '../../domain/models/exam_model.dart';
 
+enum TimerStatus { initial, running, lowTime, finished }
+
 class ExamState extends BaseState<ExamResponse> {
   final int currentIndex;
   final Map<int, List<String>> answers;
   final int? score;
+  final int remainingSeconds;
+  final int totalDurationSeconds;
+  final TimerStatus timerStatus;
 
   ExamState({
     super.isLoading,
@@ -13,6 +18,9 @@ class ExamState extends BaseState<ExamResponse> {
     this.currentIndex = 0,
     this.answers = const {},
     this.score,
+    this.remainingSeconds = 0,
+    this.totalDurationSeconds = 0,
+    this.timerStatus = TimerStatus.initial,
   });
 
   factory ExamState.initial() => ExamState();
@@ -25,6 +33,9 @@ class ExamState extends BaseState<ExamResponse> {
     int? currentIndexParam,
     Map<int, List<String>>? answersParam,
     int? scoreParam,
+    int? remainingSecondsParam,
+    int? totalDurationSecondsParam,
+    TimerStatus? timerStatusParam,
   }) {
     return ExamState(
       isLoading: isLoadingParam ?? isLoading,
@@ -33,6 +44,9 @@ class ExamState extends BaseState<ExamResponse> {
       currentIndex: currentIndexParam ?? currentIndex,
       answers: answersParam ?? answers,
       score: scoreParam ?? score,
+      remainingSeconds: remainingSecondsParam ?? remainingSeconds,
+      totalDurationSeconds: totalDurationSecondsParam ?? totalDurationSeconds,
+      timerStatus: timerStatusParam ?? timerStatus,
     );
   }
 
@@ -43,6 +57,12 @@ class ExamState extends BaseState<ExamResponse> {
       return data!.questions![currentIndex];
     }
     return null;
+  }
+
+  String get formattedTime {
+    final int minutes = remainingSeconds ~/ 60;
+    final int seconds = remainingSeconds % 60;
+    return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
   }
 
   bool get isFirstQuestion => currentIndex == 0;

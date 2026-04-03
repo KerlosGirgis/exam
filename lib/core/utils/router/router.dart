@@ -3,7 +3,9 @@ import 'package:exam/feature/auth/forget_password/presentation/screens/forget_pa
 import 'package:exam/feature/auth/forget_password/presentation/screens/reset_password_screen.dart';
 import 'package:exam/feature/auth/forget_password/presentation/screens/verification_code_screen.dart';
 import 'package:exam/feature/auth/register/presentation/screens/register_screen.dart';
+import 'package:exam/feature/exam/presentation/Bloc/exam_bloc.dart';
 import 'package:exam/feature/exam/presentation/screens/exam_page.dart';
+import 'package:exam/feature/exam/presentation/screens/score_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -86,12 +88,29 @@ class RoutesManager {
             ),
           );
         }
-        case AppRoutes.register:
+      case AppRoutes.register:
         return CupertinoPageRoute(builder: (context) => const RegisterScreen());
-        case AppRoutes.navbar:
+      case AppRoutes.navbar:
         return CupertinoPageRoute(builder: (context) => const NavBar());
-        case AppRoutes.exam:
-          return CupertinoPageRoute(builder: (context) => const ExamPage(examId: '670070a830a3c3c1944a9c6',));
+      case AppRoutes.exam:
+        {
+          return CupertinoPageRoute(
+            builder: (context) => BlocProvider(
+              create: (_) => getIt<ExamBloc>(),
+              child: const ExamPage(examId: "6700707030a3c3c1944a9c5d"),
+            ),
+          );
+        }
+      case AppRoutes.score:
+        {
+          final Map<String, dynamic> args = settings.arguments as Map<String, dynamic>;
+          return CupertinoPageRoute(
+            builder: (context) => ScorePage(
+              score: args['score'] as int,
+              total: args['total'] as int,
+            ),
+          );
+        }
       default:
         return null;
     }

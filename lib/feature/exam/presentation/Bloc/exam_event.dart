@@ -15,3 +15,8 @@ class UpdateAnswerEvent extends ExamEvent {
 }
 
 class FinishExamEvent extends ExamEvent {}
+
+class TimerTickedEvent extends ExamEvent {
+  final int duration;
+  TimerTickedEvent(this.duration);
+}

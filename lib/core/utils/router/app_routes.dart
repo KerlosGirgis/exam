@@ -8,4 +8,5 @@ class AppRoutes {
   static const String resetPasswordScreen = '/resetPasswordScreen';
   static const String navbar = '/NavBar';
   static const String exam = '/exam';
+  static const String score = '/score';
 }

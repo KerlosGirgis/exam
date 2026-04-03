@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
@@ -11,6 +12,7 @@ import 'exam_state.dart';
 class ExamBloc extends Bloc<ExamEvent, ExamState> {
   final GetExamQuestionsUseCase _getExamQuestionsUseCase;
   final HiveStorage _hiveStorage;
+  Timer? _timer;
 
   ExamBloc(this._getExamQuestionsUseCase, this._hiveStorage)
       : super(ExamState.initial()) {
@@ -19,6 +21,7 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
     on<PreviousQuestionEvent>(_onPreviousQuestion);
     on<UpdateAnswerEvent>(_onUpdateAnswer);
     on<FinishExamEvent>(_onFinishExam);
+    on<TimerTickedEvent>(_onTimerTicked);
   }
 
   Future<void> _onGetExamQuestions(
@@ -31,16 +34,51 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
 
     switch (result) {
       case SuccessResponse(data: var data):
+        final durationMinutes = data.questions?.first.exam?.duration ?? 0;
+        final totalSeconds = durationMinutes * 60;
+        
         emit(state.copyWith(
           isLoadingParam: false,
           dataParam: data,
           currentIndexParam: 0,
+          remainingSecondsParam: totalSeconds,
+          totalDurationSecondsParam: totalSeconds,
+          timerStatusParam: TimerStatus.running,
         ));
+        
+        _startTimer(totalSeconds);
+        
       case ErrorResponse(errorMessage: var message):
         emit(state.copyWith(
           isLoadingParam: false,
           errorMessageParam: message,
         ));
+    }
+  }
+
+  void _startTimer(int seconds) {
+    _timer?.cancel();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      add(TimerTickedEvent(state.remainingSeconds - 1));
+    });
+  }
+
+  void _onTimerTicked(TimerTickedEvent event, Emitter<ExamState> emit) {
+    if (event.duration <= 0) {
+      _timer?.cancel();
+      emit(state.copyWith(
+        remainingSecondsParam: 0,
+        timerStatusParam: TimerStatus.finished,
+      ));
+    } else {
+      final status = event.duration < (state.totalDurationSeconds / 2)
+          ? TimerStatus.lowTime
+          : TimerStatus.running;
+          
+      emit(state.copyWith(
+        remainingSecondsParam: event.duration,
+        timerStatusParam: status,
+      ));
     }
   }
 
@@ -64,6 +102,7 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
   }
 
   Future<void> _onFinishExam(FinishExamEvent event, Emitter<ExamState> emit) async {
+    _timer?.cancel();
     final questions = state.data?.questions;
     if (questions == null) return;
 
@@ -71,8 +110,6 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
     for (int i = 0; i < questions.length; i++) {
       final question = questions[i];
       final userAnswers = state.answers[i] ?? [];
-      
-      // Basic check for single choice correctly answered
       if (userAnswers.isNotEmpty && userAnswers.first == question.correct) {
         correctAnswersCount++;
       }
@@ -85,7 +122,12 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
     };
 
     await _hiveStorage.saveData('exams_history', 'last_results', examData);
-    
     emit(state.copyWith(scoreParam: correctAnswersCount));
+  }
+
+  @override
+  Future<void> close() {
+    _timer?.cancel();
+    return super.close();
   }
 }

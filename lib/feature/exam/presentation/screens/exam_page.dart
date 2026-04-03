@@ -1,11 +1,10 @@
+import 'package:exam/core/utils/router/app_routes.dart';
 import 'package:flutter/material.dart' hide RadioGroup;
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../config/di/di.dart';
 import '../../../../core/utils/widgets/radio_group.dart';
 import '../Bloc/exam_bloc.dart';
 import '../Bloc/exam_event.dart';
 import '../Bloc/exam_state.dart';
-import 'score_page.dart';
 
 class ExamPage extends StatefulWidget {
   final String examId;
@@ -17,16 +16,58 @@ class ExamPage extends StatefulWidget {
 
 class _ExamPageState extends State<ExamPage> {
   @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<ExamBloc>()..add(GetExamQuestionsEvent(widget.examId)),
-      child: const ExamBody(),
+  void initState() {
+    super.initState();
+    context.read<ExamBloc>().add(GetExamQuestionsEvent(widget.examId));
+  }
+
+  void _showTimeUpDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (dialogContext) => PopScope(
+        canPop: false,
+        child: AlertDialog(
+          backgroundColor: Colors.white,
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                children: [
+                  Image.asset("assets/images/sand_clock.png"),
+                  const SizedBox(width: 10),
+                  const Text(
+                    "Time Out!!",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+          actions: [
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent,
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  context.read<ExamBloc>().add(FinishExamEvent());
+                  Navigator.of(dialogContext).pop();
+                },
+                child: const Text('View Score'),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
-}
-
-class ExamBody extends StatelessWidget {
-  const ExamBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,25 +80,60 @@ class ExamBody extends StatelessWidget {
           style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
         ),
         actions: [
-          Image.asset('assets/images/alarm.png'),
-          const Text("30:00", style: TextStyle(fontSize: 26)),
-          const Padding(padding: EdgeInsets.only(right: 10)),
+          BlocBuilder<ExamBloc, ExamState>(
+            buildWhen: (previous, current) =>
+                previous.remainingSeconds != current.remainingSeconds ||
+                previous.timerStatus != current.timerStatus,
+            builder: (context, state) {
+              final bool isLowTime = state.timerStatus == TimerStatus.lowTime;
+              return Row(
+                children: [
+                  Icon(
+                    Icons.timer_outlined,
+                    color: isLowTime ? Colors.red : Colors.green,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    state.formattedTime,
+                    style: TextStyle(
+                      fontSize: 24,
+                      color: isLowTime ? Colors.red : Colors.green,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
+          const Padding(padding: EdgeInsets.only(right: 15)),
         ],
       ),
-      body: BlocListener<ExamBloc, ExamState>(
-        listenWhen: (previous, current) => previous.score != current.score,
-        listener: (context, state) {
-          if (state.score != null) {
-            Navigator.of(context).pushReplacement(
-              MaterialPageRoute(
-                builder: (context) => ScorePage(
-                  score: state.score!,
-                  total: state.data?.questions?.length ?? 0,
-                ),
-              ),
-            );
-          }
-        },
+      body: MultiBlocListener(
+        listeners: [
+          BlocListener<ExamBloc, ExamState>(
+            listenWhen: (previous, current) => previous.score != current.score,
+            listener: (context, state) {
+              if (state.score != null) {
+                Navigator.of(context).pushReplacementNamed(
+                  AppRoutes.score,
+                  arguments: {
+                    'score': state.score!,
+                    'total': state.data?.questions?.length ?? 0,
+                  },
+                );
+              }
+            },
+          ),
+          BlocListener<ExamBloc, ExamState>(
+            listenWhen: (previous, current) =>
+                previous.timerStatus != current.timerStatus,
+            listener: (context, state) {
+              if (state.timerStatus == TimerStatus.finished) {
+                _showTimeUpDialog();
+              }
+            },
+          ),
+        ],
         child: BlocBuilder<ExamBloc, ExamState>(
           builder: (context, state) {
             if (state.isLoading) {
@@ -83,7 +159,9 @@ class ExamBody extends StatelessWidget {
             }
 
             final totalQuestions = state.data?.questions?.length ?? 0;
-            final progress = (state.currentIndex + 1) / totalQuestions;
+            final progress = totalQuestions > 0 
+                ? (state.currentIndex + 1) / totalQuestions 
+                : 0.0;
 
             return SingleChildScrollView(
               child: Column(
@@ -95,7 +173,7 @@ class ExamBody extends StatelessWidget {
                       Text(
                         "Question ${state.currentIndex + 1} of $totalQuestions",
                         style: const TextStyle(fontSize: 16),
-                      )
+                      ),
                     ],
                   ),
                   Row(
@@ -141,9 +219,16 @@ class ExamBody extends StatelessWidget {
                     key: ValueKey(question.id),
                     isMultipleChoice: question.type != "single_choice",
                     initialValues: state.answers[state.currentIndex],
-                    options: question.answers?.map((a) => 
-                      RadioGroupOption(value: a.key ?? "", label: a.answer ?? "")
-                    ).toList() ?? [],
+                    options:
+                        question.answers
+                            ?.map(
+                              (a) => RadioGroupOption(
+                                value: a.key ?? "",
+                                label: a.answer ?? "",
+                              ),
+                            )
+                            .toList() ??
+                        [],
                     onChanged: (values) {
                       context.read<ExamBloc>().add(UpdateAnswerEvent(values));
                     },
@@ -158,7 +243,9 @@ class ExamBody extends StatelessWidget {
                             onPressed: state.isFirstQuestion
                                 ? null
                                 : () {
-                                    context.read<ExamBloc>().add(PreviousQuestionEvent());
+                                    context.read<ExamBloc>().add(
+                                      PreviousQuestionEvent(),
+                                    );
                                   },
                             style: OutlinedButton.styleFrom(
                               padding: const EdgeInsets.symmetric(vertical: 15),
@@ -166,7 +253,10 @@ class ExamBody extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            child: const Text("Back", style: TextStyle(fontSize: 18)),
+                            child: const Text(
+                              "Back",
+                              style: TextStyle(fontSize: 18),
+                            ),
                           ),
                         ),
                         const SizedBox(width: 20),
@@ -176,7 +266,9 @@ class ExamBody extends StatelessWidget {
                               if (state.isLastQuestion) {
                                 context.read<ExamBloc>().add(FinishExamEvent());
                               } else {
-                                context.read<ExamBloc>().add(NextQuestionEvent());
+                                context.read<ExamBloc>().add(
+                                  NextQuestionEvent(),
+                                );
                               }
                             },
                             style: ElevatedButton.styleFrom(
