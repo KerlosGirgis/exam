@@ -7,4 +7,6 @@ class AppRoutes {
   static const String verificationCodeScreen = '/verificationCodeScreen';
   static const String resetPasswordScreen = '/resetPasswordScreen';
   static const String navbar = '/NavBar';
+  static const String subjectExamScreen = '/subjectExamScreen';
+  static const String subjectExamDetailsScreen = '/subjectExamDetailsScreen';
 }
