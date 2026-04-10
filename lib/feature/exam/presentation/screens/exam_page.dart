@@ -21,54 +21,6 @@ class _ExamPageState extends State<ExamPage> {
     context.read<ExamBloc>().add(GetExamQuestionsEvent(widget.examId));
   }
 
-  void _showTimeUpDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (dialogContext) => PopScope(
-        canPop: false,
-        child: AlertDialog(
-          backgroundColor: Colors.white,
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  Image.asset("assets/images/sand_clock.png"),
-                  const SizedBox(width: 10),
-                  const Text(
-                    "Time Out!!",
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.red,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-          actions: [
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
-                  foregroundColor: Colors.white,
-                ),
-                onPressed: () {
-                  context.read<ExamBloc>().add(FinishExamEvent());
-                  Navigator.of(dialogContext).pop();
-                },
-                child: const Text('View Score'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,10 +40,7 @@ class _ExamPageState extends State<ExamPage> {
               final bool isLowTime = state.timerStatus == TimerStatus.lowTime;
               return Row(
                 children: [
-                  Icon(
-                    Icons.timer_outlined,
-                    color: isLowTime ? Colors.red : Colors.green,
-                  ),
+                  Image.asset("assets/images/alarm.png"),
                   const SizedBox(width: 5),
                   Text(
                     state.formattedTime,
@@ -129,7 +78,51 @@ class _ExamPageState extends State<ExamPage> {
                 previous.timerStatus != current.timerStatus,
             listener: (context, state) {
               if (state.timerStatus == TimerStatus.finished) {
-                _showTimeUpDialog();
+                showDialog(
+                  context: context,
+                  barrierDismissible: false,
+                  builder: (dialogContext) => PopScope(
+                    canPop: false,
+                    child: AlertDialog(
+                      backgroundColor: Colors.white,
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            children: [
+                              Image.asset("assets/images/sand_clock.png"),
+                              const SizedBox(width: 10),
+                              const Text(
+                                "Time Out!!",
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      actions: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blueAccent,
+                              foregroundColor: Colors.white,
+                            ),
+                            onPressed: () {
+                              context.read<ExamBloc>().add(FinishExamEvent());
+                              Navigator.of(dialogContext).pop();
+                            },
+                            child: const Text('View Score'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
               }
             },
           ),
