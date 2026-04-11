@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class ThemeManager {
   static ThemeData light = ThemeData(
+    scaffoldBackgroundColor: ColorManager.whiteColor,
     inputDecorationTheme: InputDecorationTheme(
       labelStyle: TextStyle(
         color: ColorManager.greyColor,
