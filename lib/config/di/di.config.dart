@@ -64,13 +64,9 @@ import '../../feature/auth/register/domain/useCases/register_usecase.dart'
     as _i62;
 import '../../feature/auth/register/presentation/viewModel/register_cubit.dart'
     as _i583;
-import '../../feature/exam/api/data_sources/exam_local_data_source_impl.dart'
-    as _i840;
 import '../../feature/exam/api/data_sources/exam_remote_data_source_impl.dart'
     as _i589;
 import '../../feature/exam/api/exam_api_client/exam_api_client.dart' as _i922;
-import '../../feature/exam/data/data_sources/exam_local_data_source_contract.dart'
-    as _i1012;
 import '../../feature/exam/data/data_sources/exam_remote_data_source_contract.dart'
     as _i191;
 import '../../feature/exam/data/repo/exam_repo_impl.dart' as _i94;
@@ -96,9 +92,6 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i359.LoginRemoteDataSourceImpl(gh<_i361.Dio>()),
     );
     gh.factory<_i526.HiveStorage>(() => _i526.HiveStorageImpl());
-    gh.factory<_i1012.ExamLocalDataSourceContract>(
-      () => _i840.ExamLocalDataSourceImpl(),
-    );
     gh.factory<_i108.SecureStorage>(
       () => _i108.SecureStorageImpl(gh<_i558.FlutterSecureStorage>()),
     );
@@ -166,14 +159,11 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i820.RegisterRepoImpl(gh<_i755.RegisterRemoteDatasourceContract>()),
     );
+    gh.factory<_i345.ExamRepoContract>(
+      () => _i94.ExamRepoImpl(gh<_i191.ExamRemoteDataSourceContract>()),
+    );
     gh.factory<_i1036.ResetPasswordCubit>(
       () => _i1036.ResetPasswordCubit(gh<_i756.ResetPasswordUseCase>()),
-    );
-    gh.factory<_i345.ExamRepoContract>(
-      () => _i94.ExamRepoImpl(
-        gh<_i191.ExamRemoteDataSourceContract>(),
-        gh<_i1012.ExamLocalDataSourceContract>(),
-      ),
     );
     gh.factory<_i43.GetExamQuestionsUseCase>(
       () => _i43.GetExamQuestionsUseCase(gh<_i345.ExamRepoContract>()),
