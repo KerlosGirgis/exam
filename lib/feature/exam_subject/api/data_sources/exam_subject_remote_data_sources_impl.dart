@@ -16,7 +16,7 @@ class ExamSubjectRemoteDataSourcesImpl
   Future<BaseResponse<List<ExamSubjectDto>>> getExams(String? subjectId) async {
     try {
       const String myToken =
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5YWI2NzQxY2ViMmM1OWY4NGEzYzg0MSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzc0NjYzOTg3fQ.q1-dD6IqBmMD20Wo5F_N2of_gBbM33Bknq2L_vxZpMo";
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5ZTY0ODcxMDRkYTBkNGNmNTU2YmViNSIsInJvbGUiOiJ1c2VyIiwiaWF0IjoxNzc2NzgzMzA2fQ.FzZ35dKjPJOB1bAKx0sws2PpqaDXHPavy92tzPpBjGI";
       final response = await examSubjectApiClient.getExamsOnSubject(
         token: myToken,
         subjectId: subjectId ?? '',
