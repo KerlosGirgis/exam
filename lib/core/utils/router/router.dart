@@ -3,6 +3,7 @@ import 'package:exam/feature/auth/forget_password/presentation/screens/forget_pa
 import 'package:exam/feature/auth/forget_password/presentation/screens/reset_password_screen.dart';
 import 'package:exam/feature/auth/forget_password/presentation/screens/verification_code_screen.dart';
 import 'package:exam/feature/auth/register/presentation/screens/register_screen.dart';
+import 'package:exam/feature/explore/presentation/screens/explore_screen.dart';
 import 'package:exam/feature/exam_subject/domain/models/exam_subject_model.dart';
 import 'package:exam/feature/exam_subject/presentation/screens/subject_exam_details_screen.dart';
 import 'package:exam/feature/exam_subject/presentation/screens/subject_exam_screen.dart';
@@ -94,6 +95,8 @@ class RoutesManager {
         return CupertinoPageRoute(builder: (context) => const RegisterScreen());
       case AppRoutes.navbar:
         return CupertinoPageRoute(builder: (context) => const NavBar());
+        case AppRoutes.explore:
+        return CupertinoPageRoute(builder: (context) => const ExplorePage());
       case AppRoutes.subjectExamScreen:
         return CupertinoPageRoute(
           builder: (context) => BlocProvider(

@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
             previous.data != current.data,
         listener: (context, state) {
           if (state.isSuccess) {
-            Navigator.pushNamed(context, AppRoutes.navbar);
+            Navigator.pushNamed(context, AppRoutes.explore);
           }
 
           if (state.isError) {
