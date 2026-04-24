@@ -17,8 +17,8 @@ class ExamResponseDto {
 
   Map<String, dynamic> toJson() => _$ExamResponseDtoToJson(this);
 
-  ExamResponse toDomain() {
-    return ExamResponse(
+  ExamDetails toDomain() {
+    return ExamDetails(
       message: message,
       questions: questions?.map((e) => e.toDomain()).toList(),
     );
@@ -60,8 +60,8 @@ class QuestionDto {
 
   Map<String, dynamic> toJson() => _$QuestionDtoToJson(this);
 
-  Question toDomain() {
-    return Question(
+  QuestionEntity toDomain() {
+    return QuestionEntity(
       id: id,
       question: question,
       answers: answers?.map((e) => e.toDomain()).toList(),
@@ -88,8 +88,8 @@ class AnswerDto {
 
   Map<String, dynamic> toJson() => _$AnswerDtoToJson(this);
 
-  Answer toDomain() {
-    return Answer(
+  AnswerEntity toDomain() {
+    return AnswerEntity(
       answer: answer,
       key: key,
     );
@@ -128,8 +128,8 @@ class ExamDto {
 
   Map<String, dynamic> toJson() => _$ExamDtoToJson(this);
 
-  Exam toDomain() {
-    return Exam(
+  ExamEntity toDomain() {
+    return ExamEntity(
       id: id,
       title: title,
       duration: duration,

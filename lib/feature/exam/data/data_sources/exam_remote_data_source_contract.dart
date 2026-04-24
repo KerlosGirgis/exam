@@ -1,5 +1,5 @@
 import '../models/exam_dto.dart';
 
-abstract class ExamRemoteDataSourceContract {
+abstract interface class ExamRemoteDataSourceContract {
   Future<ExamResponseDto> getExamQuestions(String examId);
 }

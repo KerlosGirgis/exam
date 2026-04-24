@@ -3,7 +3,7 @@ import '../../domain/models/exam_model.dart';
 
 enum TimerStatus { initial, running, lowTime, finished }
 
-class ExamState extends BaseState<ExamResponse> {
+class ExamState extends BaseState<ExamDetails> {
   final int currentIndex;
   final Map<int, List<String>> answers;
   final int? score;
@@ -29,7 +29,7 @@ class ExamState extends BaseState<ExamResponse> {
   ExamState copyWith({
     bool? isLoadingParam,
     String? errorMessageParam,
-    ExamResponse? dataParam,
+    ExamDetails? dataParam,
     int? currentIndexParam,
     Map<int, List<String>>? answersParam,
     int? scoreParam,
@@ -50,7 +50,7 @@ class ExamState extends BaseState<ExamResponse> {
     );
   }
 
-  Question? get currentQuestion {
+  QuestionEntity? get currentQuestion {
     if (data?.questions != null &&
         currentIndex >= 0 &&
         currentIndex < data!.questions!.length) {

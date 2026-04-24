@@ -98,7 +98,7 @@ class _RegisterFormState extends State<RegisterForm> {
             controller: viewModel.usernameController,
             keyboardType: TextInputType.name,
             validator: (v) =>
-                Validation.fullNameValidator(v, "Please enter your username"),
+                AppValidators.fullNameValidator(v, "Please enter your username"),
           ),
           Row(
             children: [
@@ -108,7 +108,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   hintText: AppTextConstants.enterFirstName,
                   controller: viewModel.firstNameController,
                   keyboardType: TextInputType.name,
-                  validator: (v) => Validation.fullNameValidator(
+                  validator: (v) => AppValidators.fullNameValidator(
                     v,
                     "Please enter your first name",
                   ),
@@ -121,7 +121,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   hintText: AppTextConstants.enterLastName,
                   controller: viewModel.lastNameController,
                   keyboardType: TextInputType.name,
-                  validator: (v) => Validation.fullNameValidator(
+                  validator: (v) => AppValidators.fullNameValidator(
                     v,
                     "Please enter your last name",
                   ),
@@ -134,7 +134,7 @@ class _RegisterFormState extends State<RegisterForm> {
             hintText: AppTextConstants.enterEmail,
             controller: viewModel.emailController,
             keyboardType: TextInputType.emailAddress,
-            validator: Validation.emailValidation,
+            validator: AppValidators.emailValidation,
           ),
           const RegisterPasswordForm(),
           CustomTextfield(
@@ -142,7 +142,7 @@ class _RegisterFormState extends State<RegisterForm> {
             hintText: AppTextConstants.enterPhoneNumber,
             controller: viewModel.phoneController,
             keyboardType: TextInputType.phone,
-            validator: Validation.phoneValidation,
+            validator: AppValidators.phoneValidation,
           ),
           const SizedBox(height: 20),
           CustomButton(

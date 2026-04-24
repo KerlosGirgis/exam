@@ -9,6 +9,7 @@ import 'package:hive_ce/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'feature/auth/login/data/datasources/login_local_data_source.dart';
+import 'core/storage/hive_storage_contract.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +23,8 @@ void main() async {
   Hive.init(dbPath);
 
   configureDependencies();
+  
+  await getIt<HiveStorageContract>().init();
   
   final loginLocalDataSource = getIt<LoginLocalDataSource>();
   final token = await loginLocalDataSource.getToken();

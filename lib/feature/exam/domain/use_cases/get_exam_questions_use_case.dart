@@ -10,7 +10,7 @@ class GetExamQuestionsUseCase {
 
   GetExamQuestionsUseCase(this._repository);
 
-  Future<BaseResponse<ExamResponse>> call(String examId) {
+  Future<BaseResponse<ExamDetails>> call(String examId) {
     return _repository.getExamQuestions(examId);
   }
 }

@@ -1,21 +1,21 @@
-class ExamResponse {
+class ExamDetails {
   final String? message;
-  final List<Question>? questions;
+  final List<QuestionEntity>? questions;
 
-  ExamResponse({this.message, this.questions});
+  ExamDetails({this.message, this.questions});
 }
 
-class Question {
+class QuestionEntity {
   final String? id;
   final String? question;
-  final List<Answer>? answers;
+  final List<AnswerEntity>? answers;
   final String? type;
   final String? correct;
   final dynamic subject;
-  final Exam? exam;
+  final ExamEntity? exam;
   final String? createdAt;
 
-  Question({
+  QuestionEntity({
     this.id,
     this.question,
     this.answers,
@@ -27,14 +27,14 @@ class Question {
   });
 }
 
-class Answer {
+class AnswerEntity {
   final String? answer;
   final String? key;
 
-  Answer({this.answer, this.key});
+  AnswerEntity({this.answer, this.key});
 }
 
-class Exam {
+class ExamEntity {
   final String? id;
   final String? title;
   final int? duration;
@@ -43,7 +43,7 @@ class Exam {
   final bool? active;
   final String? createdAt;
 
-  Exam({
+  ExamEntity({
     this.id,
     this.title,
     this.duration,

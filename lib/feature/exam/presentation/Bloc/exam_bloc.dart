@@ -3,18 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
 import '../../../../config/base_response/base_response.dart';
-import '../../../../core/storage/hive_storage.dart';
 import '../../domain/use_cases/get_exam_questions_use_case.dart';
+import '../../domain/use_cases/store_exam_result_use_case.dart';
 import 'exam_event.dart';
 import 'exam_state.dart';
 
 @injectable
 class ExamBloc extends Bloc<ExamEvent, ExamState> {
   final GetExamQuestionsUseCase _getExamQuestionsUseCase;
-  final HiveStorage _hiveStorage;
+  final StoreExamResultUseCase _storeExamResultUseCase;
   Timer? _timer;
 
-  ExamBloc(this._getExamQuestionsUseCase, this._hiveStorage)
+  ExamBloc(this._getExamQuestionsUseCase, this._storeExamResultUseCase)
       : super(ExamState.initial()) {
     on<GetExamQuestionsEvent>(_onGetExamQuestions);
     on<NextQuestionEvent>(_onNextQuestion);
@@ -121,7 +121,7 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
       'date': DateTime.now().toIso8601String(),
     };
 
-    await _hiveStorage.saveData('exams_history', 'last_results', examData);
+    await _storeExamResultUseCase(examData);
     emit(state.copyWith(scoreParam: correctAnswersCount));
   }
 

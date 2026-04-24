@@ -32,7 +32,7 @@ class _RegisterPasswordFormState extends State<RegisterPasswordForm> {
             isPassword: true,
             onToggleVisibility: () =>
                 setState(() => _obscurePassword = !_obscurePassword),
-            validator: Validation.passwordValidation,
+            validator: AppValidators.passwordValidation,
           ),
         ),
         const SizedBox(width: 10),
@@ -48,7 +48,7 @@ class _RegisterPasswordFormState extends State<RegisterPasswordForm> {
               () => _obscureConfirmPassword = !_obscureConfirmPassword,
             ),
             validator: (value) =>
-                Validation.passconfirmValidation(value, viewModel.passwordController),
+                AppValidators.passconfirmValidation(value, viewModel.passwordController),
           ),
         ),
       ],

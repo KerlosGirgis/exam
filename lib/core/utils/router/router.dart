@@ -99,7 +99,7 @@ class RoutesManager {
             return CupertinoPageRoute(
               builder: (context) => BlocProvider(
                 create: (_) => getIt<ExamBloc>(),
-                child: const ExamPage(examId: "6700707030a3c3c1944a9c5d"),
+                child: const ExamPage(examId: "69d980187c82914570305e3b"),
               ),
             );
           }
