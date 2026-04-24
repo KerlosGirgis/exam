@@ -81,6 +81,34 @@ import '../../feature/exam/domain/use_cases/get_exam_questions_use_case.dart'
 import '../../feature/exam/domain/use_cases/store_exam_result_use_case.dart'
     as _i307;
 import '../../feature/exam/presentation/Bloc/exam_bloc.dart' as _i635;
+import '../../feature/exam_subject/api/data_sources/exam_subject_remote_data_sources_impl.dart'
+    as _i869;
+import '../../feature/exam_subject/api/exam_subject_api_client/exam_subject_api_client.dart'
+    as _i199;
+import '../../feature/exam_subject/data/data_sources/exam_subject_remote_data_sources_contract.dart'
+    as _i188;
+import '../../feature/exam_subject/data/repo/exam_subject_repo_impl.dart'
+    as _i919;
+import '../../feature/exam_subject/domain/repo/exam_subject_repo_contract.dart'
+    as _i1010;
+import '../../feature/exam_subject/domain/use_case/exam_subject_use_case.dart'
+    as _i930;
+import '../../feature/exam_subject/presentation/view_model/cubit/exam_subject_cubit.dart'
+    as _i870;
+import '../../feature/profile/api/data_sources/profile_remote_data_source_impl.dart'
+    as _i711;
+import '../../feature/profile/api/profile_api_client/profile_api_client.dart'
+    as _i365;
+import '../../feature/profile/data/data_sources/profile_remote_data_source_contract.dart'
+    as _i208;
+import '../../feature/profile/data/repo/profile_repo_impl.dart' as _i341;
+import '../../feature/profile/domain/repo/profile_repo_contract.dart' as _i334;
+import '../../feature/profile/domain/use_case/edit_profile_use_case.dart'
+    as _i36;
+import '../../feature/profile/domain/use_case/get_user_profile_use_case.dart'
+    as _i736;
+import '../../feature/profile/presentation/view_model/cubit/profile_cubit.dart'
+    as _i784;
 import '../dio/dio_module.dart' as _i977;
 import 'storage_module.dart' as _i371;
 
@@ -112,6 +140,12 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i620.RegisterApiService(gh<_i361.Dio>()),
     );
     gh.factory<_i922.ExamApiClient>(() => _i922.ExamApiClient(gh<_i361.Dio>()));
+    gh.factory<_i199.ExamSubjectApiClient>(
+      () => _i199.ExamSubjectApiClient(gh<_i361.Dio>()),
+    );
+    gh.factory<_i365.ProfileApiClient>(
+      () => _i365.ProfileApiClient(gh<_i361.Dio>()),
+    );
     gh.factory<_i51.LoginLocalDataSource>(
       () => _i51.LoginLocalDataSourceImpl(gh<_i108.SecureStorage>()),
     );
@@ -119,6 +153,9 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i913.ForgetPasswordRemoteDataSourcesImpl(
         gh<_i439.ForgetPasswordApiClient>(),
       ),
+    );
+    gh.factory<_i208.ProfileRemoteDataSourceContract>(
+      () => _i711.ProfileRemoteDataSourceImpl(gh<_i365.ProfileApiClient>()),
     );
     gh.factory<_i907.ForgetPasswordRepoContract>(
       () => _i710.ForgetPasswordRepoImpl(
@@ -153,6 +190,14 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i108.SecureStorage>(),
       ),
     );
+    gh.factory<_i188.ExamSubjectRemoteDataSourcesContract>(
+      () => _i869.ExamSubjectRemoteDataSourcesImpl(
+        gh<_i199.ExamSubjectApiClient>(),
+      ),
+    );
+    gh.factory<_i334.ProfileRepoContract>(
+      () => _i341.ProfileRepoImpl(gh<_i208.ProfileRemoteDataSourceContract>()),
+    );
     gh.factory<_i777.ForgetPasswordCubit>(
       () => _i777.ForgetPasswordCubit(gh<_i944.ForgetPasswordUseCase>()),
     );
@@ -162,12 +207,23 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i58.LoginUseCase>(
       () => _i58.LoginUseCase(gh<_i914.LoginRepository>()),
     );
+    gh.factory<_i1010.ExamSubjectRepoContract>(
+      () => _i919.ExamSubjectRepoImpl(
+        gh<_i188.ExamSubjectRemoteDataSourcesContract>(),
+      ),
+    );
     gh.factory<_i1018.LoginBloc>(
       () => _i1018.LoginBloc(gh<_i58.LoginUseCase>()),
     );
     gh.factory<_i628.RegisterRepoContract>(
       () =>
           _i820.RegisterRepoImpl(gh<_i755.RegisterRemoteDatasourceContract>()),
+    );
+    gh.factory<_i36.EditProfileUseCase>(
+      () => _i36.EditProfileUseCase(gh<_i334.ProfileRepoContract>()),
+    );
+    gh.factory<_i736.GetUserProfileUseCase>(
+      () => _i736.GetUserProfileUseCase(gh<_i334.ProfileRepoContract>()),
     );
     gh.factory<_i1036.ResetPasswordCubit>(
       () => _i1036.ResetPasswordCubit(gh<_i756.ResetPasswordUseCase>()),
@@ -183,9 +239,20 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i307.StoreExamResultUseCase>(
       () => _i307.StoreExamResultUseCase(gh<_i345.ExamRepoContract>()),
+    gh.factory<_i930.ExamSubjectUseCase>(
+      () => _i930.ExamSubjectUseCase(gh<_i1010.ExamSubjectRepoContract>()),
     );
     gh.factory<_i62.RegisterUsecase>(
       () => _i62.RegisterUsecase(gh<_i628.RegisterRepoContract>()),
+    );
+    gh.factory<_i784.ProfileCubit>(
+      () => _i784.ProfileCubit(
+        gh<_i736.GetUserProfileUseCase>(),
+        gh<_i36.EditProfileUseCase>(),
+      ),
+    );
+    gh.factory<_i870.ExamSubjectCubit>(
+      () => _i870.ExamSubjectCubit(gh<_i930.ExamSubjectUseCase>()),
     );
     gh.factory<_i583.RegisterCubit>(
       () => _i583.RegisterCubit(gh<_i62.RegisterUsecase>()),

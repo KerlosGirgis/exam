@@ -28,15 +28,16 @@ void main() async {
   
   final loginLocalDataSource = getIt<LoginLocalDataSource>();
   final token = await loginLocalDataSource.getToken();
-  
-  final String initialRoute = token != null ? AppRoutes.navbar : AppRoutes.login;
-  
+
+  final String initialRoute = token != null
+      ? AppRoutes.explore
+      : AppRoutes.login;
+
   runApp(MyApp(initialRoute: initialRoute));
 }
 
 class MyApp extends StatelessWidget {
   final String initialRoute;
-  
   const MyApp({super.key, required this.initialRoute});
 
   @override

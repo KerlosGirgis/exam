@@ -9,4 +9,8 @@ class AppRoutes {
   static const String navbar = '/NavBar';
   static const String exam = '/exam';
   static const String score = '/score';
+  static const String explore = '/explore';
+  static const String subjectExamScreen = '/subjectExamScreen';
+  static const String subjectExamDetailsScreen = '/subjectExamDetailsScreen';
+  static const String profile = '/profile';
 }
