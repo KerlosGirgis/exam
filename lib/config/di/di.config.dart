@@ -63,6 +63,44 @@ import '../../feature/auth/register/domain/useCases/register_usecase.dart'
     as _i62;
 import '../../feature/auth/register/presentation/viewModel/register_cubit.dart'
     as _i583;
+import '../../feature/exam_subject/api/data_sources/exam_subject_remote_data_sources_impl.dart'
+    as _i869;
+import '../../feature/exam_subject/api/exam_subject_api_client/exam_subject_api_client.dart'
+    as _i199;
+import '../../feature/exam_subject/data/data_sources/exam_subject_remote_data_sources_contract.dart'
+    as _i188;
+import '../../feature/exam_subject/data/repo/exam_subject_repo_impl.dart'
+    as _i919;
+import '../../feature/exam_subject/domain/repo/exam_subject_repo_contract.dart'
+    as _i1010;
+import '../../feature/exam_subject/domain/use_case/exam_subject_use_case.dart'
+    as _i930;
+import '../../feature/exam_subject/presentation/view_model/cubit/exam_subject_cubit.dart'
+    as _i870;
+import '../../feature/explore/api/data_source/explore_remote_datasource_impl.dart'
+    as _i508;
+import '../../feature/explore/api/services/explore_services.dart' as _i461;
+import '../../feature/explore/data/data_source/explore_remote_datasource.dart'
+    as _i407;
+import '../../feature/explore/data/repo/explore_repo_impl.dart' as _i495;
+import '../../feature/explore/domain/repo/explore_repo_contract.dart' as _i679;
+import '../../feature/explore/domain/usecase/subjects_usecase.dart' as _i413;
+import '../../feature/explore/presentation/view_model/explore_cubit.dart'
+    as _i696;
+import '../../feature/profile_change_password/api/data_source/change_password_remote_data_source_impl.dart'
+    as _i416;
+import '../../feature/profile_change_password/api/services/change_password_service.dart'
+    as _i225;
+import '../../feature/profile_change_password/data/data_source/change_password_remote_data_source.dart'
+    as _i643;
+import '../../feature/profile_change_password/data/repo/change_password_repo_impl.dart'
+    as _i942;
+import '../../feature/profile_change_password/domain/repo/change_password_repo.dart'
+    as _i38;
+import '../../feature/profile_change_password/domain/usecase/change_password_usecase.dart'
+    as _i330;
+import '../../feature/profile_change_password/presentation/view_model/change_password_cubit.dart'
+    as _i757;
 import '../dio/dio_module.dart' as _i977;
 import 'storage_module.dart' as _i371;
 
@@ -92,8 +130,29 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i620.RegisterApiService>(
       () => _i620.RegisterApiService(gh<_i361.Dio>()),
     );
+    gh.factory<_i199.ExamSubjectApiClient>(
+      () => _i199.ExamSubjectApiClient(gh<_i361.Dio>()),
+    );
+    gh.factory<_i461.ExploreService>(
+      () => _i461.ExploreService(gh<_i361.Dio>()),
+    );
+    gh.factory<_i225.ChangePasswordService>(
+      () => _i225.ChangePasswordService(gh<_i361.Dio>()),
+    );
+    gh.factory<_i407.ExploreRemoteDatasource>(
+      () => _i508.ExploreDataSourceImp(
+        gh<_i461.ExploreService>(),
+        gh<_i108.SecureStorage>(),
+      ),
+    );
     gh.factory<_i51.LoginLocalDataSource>(
       () => _i51.LoginLocalDataSourceImpl(gh<_i108.SecureStorage>()),
+    );
+    gh.factory<_i643.ChangePasswordRemoteDataSource>(
+      () => _i416.ChangePasswordRemoteDataSourceImpl(
+        changePasswordService: gh<_i225.ChangePasswordService>(),
+        secureStorage: gh<_i108.SecureStorage>(),
+      ),
     );
     gh.factory<_i32.ForgetPasswordRemoteDataSourcesContract>(
       () => _i913.ForgetPasswordRemoteDataSourcesImpl(
@@ -105,11 +164,19 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i32.ForgetPasswordRemoteDataSourcesContract>(),
       ),
     );
+    gh.factory<_i38.ChangePasswordRepo>(
+      () => _i942.ChangePasswordRepoImpl(
+        gh<_i643.ChangePasswordRemoteDataSource>(),
+      ),
+    );
     gh.factory<_i914.LoginRepository>(
       () => _i393.LoginRepositoryImpl(
         gh<_i493.LoginRemoteDataSource>(),
         gh<_i51.LoginLocalDataSource>(),
       ),
+    );
+    gh.factory<_i679.ExploreRepo>(
+      () => _i495.ExploreRepoImp(gh<_i407.ExploreRemoteDatasource>()),
     );
     gh.factory<_i944.ForgetPasswordUseCase>(
       () => _i944.ForgetPasswordUseCase(gh<_i907.ForgetPasswordRepoContract>()),
@@ -124,17 +191,36 @@ extension GetItInjectableX on _i174.GetIt {
       () =>
           _i511.VerifyResetCodeUseCase(gh<_i907.ForgetPasswordRepoContract>()),
     );
+    gh.factory<_i188.ExamSubjectRemoteDataSourcesContract>(
+      () => _i869.ExamSubjectRemoteDataSourcesImpl(
+        gh<_i199.ExamSubjectApiClient>(),
+      ),
+    );
     gh.factory<_i777.ForgetPasswordCubit>(
       () => _i777.ForgetPasswordCubit(gh<_i944.ForgetPasswordUseCase>()),
     );
     gh.factory<_i700.VerificationCubit>(
       () => _i700.VerificationCubit(gh<_i511.VerifyResetCodeUseCase>()),
     );
+    gh.factory<_i413.SubjectsUseCase>(
+      () => _i413.SubjectsUseCase(gh<_i679.ExploreRepo>()),
+    );
     gh.factory<_i58.LoginUseCase>(
       () => _i58.LoginUseCase(gh<_i914.LoginRepository>()),
     );
+    gh.factory<_i696.ExploreCubit>(
+      () => _i696.ExploreCubit(gh<_i413.SubjectsUseCase>()),
+    );
+    gh.factory<_i1010.ExamSubjectRepoContract>(
+      () => _i919.ExamSubjectRepoImpl(
+        gh<_i188.ExamSubjectRemoteDataSourcesContract>(),
+      ),
+    );
     gh.factory<_i1018.LoginBloc>(
       () => _i1018.LoginBloc(gh<_i58.LoginUseCase>()),
+    );
+    gh.factory<_i330.ChangePasswordUseCase>(
+      () => _i330.ChangePasswordUseCase(gh<_i38.ChangePasswordRepo>()),
     );
     gh.factory<_i628.RegisterRepoContract>(
       () =>
@@ -143,8 +229,17 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1036.ResetPasswordCubit>(
       () => _i1036.ResetPasswordCubit(gh<_i756.ResetPasswordUseCase>()),
     );
+    gh.factory<_i930.ExamSubjectUseCase>(
+      () => _i930.ExamSubjectUseCase(gh<_i1010.ExamSubjectRepoContract>()),
+    );
+    gh.factory<_i757.ChangePasswordCubit>(
+      () => _i757.ChangePasswordCubit(gh<_i330.ChangePasswordUseCase>()),
+    );
     gh.factory<_i62.RegisterUsecase>(
       () => _i62.RegisterUsecase(gh<_i628.RegisterRepoContract>()),
+    );
+    gh.factory<_i870.ExamSubjectCubit>(
+      () => _i870.ExamSubjectCubit(gh<_i930.ExamSubjectUseCase>()),
     );
     gh.factory<_i583.RegisterCubit>(
       () => _i583.RegisterCubit(gh<_i62.RegisterUsecase>()),

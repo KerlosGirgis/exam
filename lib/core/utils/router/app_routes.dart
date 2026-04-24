@@ -10,4 +10,5 @@ class AppRoutes {
   static const String explore = '/explore';
   static const String subjectExamScreen = '/subjectExamScreen';
   static const String subjectExamDetailsScreen = '/subjectExamDetailsScreen';
+  static const String changePassword = '/changePassword';
 }

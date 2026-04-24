@@ -9,4 +9,5 @@ abstract class ColorManager {
   static const Color hintColor = Color(0xffA6A6A6);
   static const Color whiteColor = Color(0xffF9F9F9);
   static const Color whiteBlueColor = Color(0xffDFE7F7);
+  static const Color disabledColor = Color(0xff878787);
 }

@@ -6,4 +6,5 @@ abstract class EndPoint {
   static const String resetPassword = '${baseUrl}auth/resetPassword';
   static const String loginUrl = 'auth/signin';
   static const String getExams = '${baseUrl}exams';
+  static const String changePassword = '${baseUrl}auth/change-password';
 }

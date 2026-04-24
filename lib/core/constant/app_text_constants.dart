@@ -19,4 +19,15 @@ class AppTextConstants {
   static const reEnterPassword = "Re-enter your password";
   static const phoneNumber = "Phone Number";
   static const enterPhoneNumber = "Enter your phone number";
+
+  //for change password
+  static const resetPassword = "Reset Password";
+  static const currentPassword = "current password";
+  static const enterCurrentPassword = "current password";
+  static const newPassword = "new password";
+  static const enterNewPassword = "new password";
+  static const confirmNewPassword = "Confirm Password";
+  static const update = "Update";
+  static const passwordChangedSuccess = "Password changed successfully";
+  static const passwordChangedError = "Failed to change password";
 }

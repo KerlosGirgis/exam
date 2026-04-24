@@ -8,6 +8,8 @@ import 'package:exam/feature/exam_subject/domain/models/exam_subject_model.dart'
 import 'package:exam/feature/exam_subject/presentation/screens/subject_exam_details_screen.dart';
 import 'package:exam/feature/exam_subject/presentation/screens/subject_exam_screen.dart';
 import 'package:exam/feature/exam_subject/presentation/view_model/cubit/exam_subject_cubit.dart';
+import 'package:exam/feature/profile_change_password/presentation/screens/change_password_screen.dart';
+import 'package:exam/feature/profile_change_password/presentation/view_model/change_password_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -110,6 +112,13 @@ class RoutesManager {
             builder: (context) => SubjectExamDetailsScreen(modal: modal),
           );
         }
+      case AppRoutes.changePassword:
+        return CupertinoPageRoute(
+          builder: (context) => BlocProvider(
+            create: (_) => getIt<ChangePasswordCubit>(),
+            child: const ChangePasswordScreen(),
+          ),
+        );
 
       default:
         return null;
