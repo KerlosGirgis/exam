@@ -13,7 +13,7 @@ import 'core/storage/hive_storage_contract.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   final Directory appDocDir = await getApplicationDocumentsDirectory();
   final String dbPath = '${appDocDir.path}/db';
   final Directory dbDir = Directory(dbPath);
@@ -23,9 +23,9 @@ void main() async {
   Hive.init(dbPath);
 
   configureDependencies();
-  
+
   await getIt<HiveStorageContract>().init();
-  
+
   final loginLocalDataSource = getIt<LoginLocalDataSource>();
   final token = await loginLocalDataSource.getToken();
 

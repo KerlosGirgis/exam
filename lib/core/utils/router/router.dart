@@ -10,8 +10,6 @@ import 'package:exam/feature/exam/presentation/screens/score_page.dart';
 import 'package:exam/feature/explore/presentation/screens/explore_screen.dart';
 import 'package:exam/feature/exam_subject/domain/models/exam_subject_model.dart';
 import 'package:exam/feature/exam_subject/presentation/screens/subject_exam_details_screen.dart';
-import 'package:exam/feature/exam_subject/presentation/screens/subject_exam_screen.dart';
-import 'package:exam/feature/exam_subject/presentation/view_model/cubit/exam_subject_cubit.dart';
 import 'package:exam/feature/profile/presentation/screens/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -119,12 +117,24 @@ class RoutesManager {
               ),
             );
           }
+        case AppRoutes.subjectExamDetailsScreen:
+          {
+            final modal = settings.arguments as ExamSubjectModel;
+            return CupertinoPageRoute(
+              builder: (context) => SubjectExamDetailsScreen(modal: modal),
+            );
+          }
+        case AppRoutes.explore:
+          return CupertinoPageRoute(builder: (context) => const ExplorePage());
+        case AppRoutes.profile:
+          return CupertinoPageRoute(builder: (context) => const ProfileScreen());
         default:
           return CupertinoPageRoute(
             builder: (context) => ErrorPage(
               errorMessage: "No route defined for ${settings.name}",
             ),
           );
+
       }
     } catch (e) {
       return CupertinoPageRoute(
@@ -133,30 +143,5 @@ class RoutesManager {
         ),
       );
         }
-      case AppRoutes.register:
-        return CupertinoPageRoute(builder: (context) => const RegisterScreen());
-      case AppRoutes.navbar:
-        return CupertinoPageRoute(builder: (context) => const NavBar());
-        case AppRoutes.explore:
-        return CupertinoPageRoute(builder: (context) => const ExplorePage());
-      case AppRoutes.subjectExamScreen:
-        return CupertinoPageRoute(
-          builder: (context) => BlocProvider(
-            create: (_) => getIt<ExamSubjectCubit>(),
-            child: SubjectExamScreen(subjectId: '670037f6728c92b7fdf434fc'),
-          ),
-        );
-      case AppRoutes.subjectExamDetailsScreen:
-        {
-          final modal = settings.arguments as ExamSubjectModel;
-          return CupertinoPageRoute(
-            builder: (context) => SubjectExamDetailsScreen(modal: modal),
-          );
-        }
-      case AppRoutes.profile:
-        return CupertinoPageRoute(builder: (context) => const ProfileScreen());
-      default:
-        return null;
     }
   }
-}
