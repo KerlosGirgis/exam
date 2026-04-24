@@ -1,5 +1,4 @@
-class AppTextConstants {
-  AppTextConstants._();
+abstract class AppTextConstants {
   //for register
   static const register = "Register";
   static const alreadyHaveAccount = "Already have an account? ";
@@ -12,11 +11,22 @@ class AppTextConstants {
   static const lastName = "Last Name";
   static const enterLastName = "Enter your last name";
   static const email = "Email";
-  static const enterEmail = "Enter your email";
+  static const enterEmail = "Please enter your email";
   static const password = "Password";
-  static const enterPassword = "Enter your password";
+  static const enterPassword = "Please enter your password";
   static const confirmPassword = "Confirm Password";
-  static const reEnterPassword = "Re-enter your password";
+  static const reEnterPassword = "Please confirm your password";
   static const phoneNumber = "Phone Number";
-  static const enterPhoneNumber = "Enter your phone number";
+  static const enterPhoneNumber = "Please enter your phone number";
+
+  // Validation messages
+  static const emailInvalid = "Email is not valid";
+  static const passwordMinLength = "Min 8 characters";
+  static const passwordUpper = "Add uppercase letter (A-Z)";
+  static const passwordLower = "Add lowercase letter (a-z)";
+  static const passwordDigit = "Add digit (0-9)";
+  static const passwordSpecial = "Add special char (#?!@\$%^&*-)";
+  static const confirmPasswordRequired = "Please confirm your password";
+  static const passwordsDoNotMatch = "Passwords don't match";
+  static const phoneInvalid = "Enter a valid Egyptian number like 01096703854";
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import '../constant/app_text_constants.dart';
 
-class Validation {
+abstract class AppValidators {
   static String? fullNameValidator(String? value, String message) {
     if (value == null || value.trim().isEmpty) {
       return message;
@@ -16,28 +17,28 @@ class Validation {
   }
 
   static String? emailValidation(String? value) {
-    String? result = fullNameValidator(value, "Please enter your email");
+    String? result = fullNameValidator(value, AppTextConstants.enterEmail);
     if (result == null) {
       if (!isValidEmail(value!)) {
-        result = "Email is not valid";
+        result = AppTextConstants.emailInvalid;
       }
     }
     return result;
   }
 
   static String? passwordValidation(String? value) {
-    String? result = fullNameValidator(value, "Please enter your password");
+    String? result = fullNameValidator(value, AppTextConstants.enterPassword);
     if (result == null) {
       if (value!.length < 8) {
-        result = "Min 8 characters";
+        result = AppTextConstants.passwordMinLength;
       } else if (!RegExp(r'^(?=.*?[A-Z])').hasMatch(value)) {
-        result = "Add uppercase letter (A-Z)";
+        result = AppTextConstants.passwordUpper;
       } else if (!RegExp(r'^(?=.*?[a-z])').hasMatch(value)) {
-        result = "Add lowercase letter (a-z)";
+        result = AppTextConstants.passwordLower;
       } else if (!RegExp(r'^(?=.*?[0-9])').hasMatch(value)) {
-        result = "Add digit (0-9)";
+        result = AppTextConstants.passwordDigit;
       } else if (!RegExp(r'^(?=.*?[#?!@$%^&*-])').hasMatch(value)) {
-        result = "Add special char (#?!@\$%^&*-)";
+        result = AppTextConstants.passwordSpecial;
       }
     }
     return result;
@@ -47,31 +48,31 @@ class Validation {
     String? value,
     TextEditingController passwordController,
   ) {
-    String? result = fullNameValidator(value, "Please confirm your password");
+    String? result = fullNameValidator(value, AppTextConstants.reEnterPassword);
     if (result == null) {
       if (value != passwordController.text) {
-        result = "Passwords don't match";
+        result = AppTextConstants.passwordsDoNotMatch;
       } else if (value!.length < 8) {
-        result = "Min 8 characters";
+        result = AppTextConstants.passwordMinLength;
       } else if (!RegExp(r'^(?=.*?[A-Z])').hasMatch(value)) {
-        result = "Add uppercase letter (A-Z)";
+        result = AppTextConstants.passwordUpper;
       } else if (!RegExp(r'^(?=.*?[a-z])').hasMatch(value)) {
-        result = "Add lowercase letter (a-z)";
+        result = AppTextConstants.passwordLower;
       } else if (!RegExp(r'^(?=.*?[0-9])').hasMatch(value)) {
-        result = "Add digit (0-9)";
+        result = AppTextConstants.passwordDigit;
       } else if (!RegExp(r'^(?=.*?[#?!@$%^&*-])').hasMatch(value)) {
-        result = "Add special char (#?!@\$%^&*-)";
+        result = AppTextConstants.passwordSpecial;
       }
     }
     return result;
   }
 
   static String? phoneValidation(String? value) {
-    String? result = fullNameValidator(value, "Please enter your phone number");
+    String? result = fullNameValidator(value, AppTextConstants.enterPhoneNumber);
     if (result == null) {
       String phone = value!.replaceAll('+20', '0').replaceAll(' ', '');
       if (!RegExp(r'^01[0-9]{9}$').hasMatch(phone)) {
-        return "Enter a valid Egyptian number like 01096703854";
+        return AppTextConstants.phoneInvalid;
       }
     }
     return result;
