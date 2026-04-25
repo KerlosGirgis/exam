@@ -1,3 +1,4 @@
+import '../../../results/domain/models/exam_result_entity.dart';
 import '../../../../config/base_state/base_state.dart';
 import '../../domain/models/exam_model.dart';
 
@@ -7,6 +8,7 @@ class ExamState extends BaseState<ExamDetails> {
   final int currentIndex;
   final Map<int, List<String>> answers;
   final int? score;
+  final ExamResultEntity? result;
   final int remainingSeconds;
   final int totalDurationSeconds;
   final TimerStatus timerStatus;
@@ -18,6 +20,7 @@ class ExamState extends BaseState<ExamDetails> {
     this.currentIndex = 0,
     this.answers = const {},
     this.score,
+    this.result,
     this.remainingSeconds = 0,
     this.totalDurationSeconds = 0,
     this.timerStatus = TimerStatus.initial,
@@ -33,6 +36,7 @@ class ExamState extends BaseState<ExamDetails> {
     int? currentIndexParam,
     Map<int, List<String>>? answersParam,
     int? scoreParam,
+    ExamResultEntity? resultParam,
     int? remainingSecondsParam,
     int? totalDurationSecondsParam,
     TimerStatus? timerStatusParam,
@@ -44,6 +48,7 @@ class ExamState extends BaseState<ExamDetails> {
       currentIndex: currentIndexParam ?? currentIndex,
       answers: answersParam ?? answers,
       score: scoreParam ?? score,
+      result: resultParam ?? result,
       remainingSeconds: remainingSecondsParam ?? remainingSeconds,
       totalDurationSeconds: totalDurationSecondsParam ?? totalDurationSeconds,
       timerStatus: timerStatusParam ?? timerStatus,

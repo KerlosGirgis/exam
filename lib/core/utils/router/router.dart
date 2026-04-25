@@ -14,6 +14,8 @@ import 'package:exam/feature/profile/presentation/screens/profile_screen.dart';
 import 'package:exam/feature/exam_subject/presentation/screens/subject_exam_screen.dart';
 import 'package:exam/feature/exam_subject/presentation/view_model/cubit/exam_subject_cubit.dart';
 import 'package:exam/feature/profile_change_password/presentation/screens/change_password_screen.dart';
+import 'package:exam/feature/results/domain/models/exam_result_entity.dart';
+import 'package:exam/feature/results/presentation/screens/results_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,7 +25,6 @@ import '../../../feature/auth/forget_password/presentation/view_model/cubit/rese
 import '../../../feature/auth/forget_password/presentation/view_model/cubit/verification_cubit.dart';
 import '../../../feature/auth/login/presentation/Bloc/login_bloc.dart';
 import '../../../feature/auth/login/presentation/screens/login_screen.dart';
-import '../../../feature/home/presentation/screens/navbar.dart';
 
 class RoutesManager {
   static Route? router(RouteSettings settings) {
@@ -101,14 +102,13 @@ class RoutesManager {
           return CupertinoPageRoute(
             builder: (context) => const RegisterScreen(),
           );
-        case AppRoutes.navbar:
-          return CupertinoPageRoute(builder: (context) => const NavBar());
         case AppRoutes.exam:
           {
+            final examId = settings.arguments as String;
             return CupertinoPageRoute(
               builder: (context) => BlocProvider(
                 create: (_) => getIt<ExamBloc>(),
-                child: const ExamPage(examId: "69d980187c82914570305e3b"),
+                child: ExamPage(examId: examId),
               ),
             );
           }
@@ -120,6 +120,8 @@ class RoutesManager {
               builder: (context) => ScorePage(
                 score: args['score'] as int,
                 total: args['total'] as int,
+                examId: args['examId'] as String?,
+                result: args['result'] as ExamResultEntity?,
               ),
             );
           }
@@ -149,6 +151,10 @@ class RoutesManager {
         case AppRoutes.changePassword:
           return CupertinoPageRoute(
             builder: (context) => const ChangePasswordScreen(),
+          );
+        case AppRoutes.results:
+          return CupertinoPageRoute(
+            builder: (context) => const ResultsScreen(),
           );
         default:
           return CupertinoPageRoute(

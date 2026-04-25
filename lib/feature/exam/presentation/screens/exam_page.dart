@@ -62,12 +62,14 @@ class _ExamPageState extends State<ExamPage> {
           BlocListener<ExamBloc, ExamState>(
             listenWhen: (previous, current) => previous.score != current.score,
             listener: (context, state) {
-              if (state.score != null) {
+              if (state.score != null && state.result != null) {
                 Navigator.of(context).pushReplacementNamed(
                   AppRoutes.score,
                   arguments: {
                     'score': state.score!,
                     'total': state.data?.questions?.length ?? 0,
+                    'result': state.result!,
+                    'examId': widget.examId,
                   },
                 );
               }

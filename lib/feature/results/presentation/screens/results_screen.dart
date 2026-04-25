@@ -134,7 +134,7 @@ class ResultsScreen extends StatelessWidget {
                       ),
                     ],
                   );
-                }).toList(),
+                }),
                 const SliverToBoxAdapter(child: SizedBox(height: 20)),
               ],
             );

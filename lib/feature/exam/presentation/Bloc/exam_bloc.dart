@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:injectable/injectable.dart';
 
+import '../../../results/domain/models/exam_result_entity.dart';
 import '../../../../config/base_response/base_response.dart';
 import '../../domain/use_cases/get_exam_questions_use_case.dart';
 import '../../domain/use_cases/store_exam_result_use_case.dart';
@@ -149,8 +150,21 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
       'userAnswers': state.answers.map((key, value) => MapEntry(key.toString(), value)),
     };
 
+    final resultEntity = ExamResultEntity(
+      uid: DateTime.now().millisecondsSinceEpoch.toString(),
+      score: correctAnswersCount,
+      total: questions.length,
+      date: DateTime.now(),
+      examTitle: examTitle,
+      subjectId: subjectId,
+      subjectName: subjectName,
+      subjectIcon: subjectIcon,
+      questions: questions,
+      userAnswers: Map.from(state.answers),
+    );
+
     await _storeExamResultUseCase(examData);
-    emit(state.copyWith(scoreParam: correctAnswersCount));
+    emit(state.copyWith(scoreParam: correctAnswersCount, resultParam: resultEntity));
   }
 
   @override

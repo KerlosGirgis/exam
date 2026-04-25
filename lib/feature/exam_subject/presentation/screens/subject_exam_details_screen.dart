@@ -1,4 +1,5 @@
 import 'package:exam/core/utils/color_manager.dart';
+import 'package:exam/core/utils/router/app_routes.dart';
 import 'package:exam/core/utils/widgets/custom_app_bar.dart';
 import 'package:exam/core/utils/widgets/custom_elevated_button.dart';
 import 'package:exam/core/utils/widgets/custom_text.dart';
@@ -62,7 +63,16 @@ class SubjectExamDetailsScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 200),
-            CustomButton(title: 'Start', onPressed: () {}, isEnabled: true),
+            CustomButton(
+              title: 'Start',
+              onPressed: () {
+                Navigator.of(context).pushNamed(
+                  AppRoutes.exam,
+                  arguments: modal.id,
+                );
+              },
+              isEnabled: true,
+            ),
           ],
         ),
       ),
