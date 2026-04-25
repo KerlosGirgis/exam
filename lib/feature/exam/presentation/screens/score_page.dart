@@ -1,13 +1,17 @@
 import 'package:exam/core/utils/color_manager.dart';
 import 'package:exam/core/utils/router/app_routes.dart';
+import 'package:exam/feature/results/domain/models/exam_result_entity.dart';
+import 'package:exam/feature/results/presentation/screens/exam_details_screen.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class ScorePage extends StatelessWidget {
   final int score;
   final int total;
+  final String? examId;
+  final ExamResultEntity? result;
 
-  const ScorePage({super.key, required this.score, required this.total});
+  const ScorePage({super.key, required this.score, required this.total, this.examId, this.result});
 
   @override
   Widget build(BuildContext context) {
@@ -213,6 +217,17 @@ class ScorePage extends StatelessWidget {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: () {
+                          if (result != null) {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => ExamDetailsScreen(result: result!),
+                              ),
+                            );
+                          } else {
+                            Navigator.of(context).pushNamed(
+                              AppRoutes.results,
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: ColorManager.primeColor,
@@ -240,7 +255,14 @@ class ScorePage extends StatelessWidget {
                     Expanded(
                       child: OutlinedButton(
                         onPressed: () {
-                          Navigator.of(context).pushReplacementNamed(AppRoutes.exam);
+                          if (examId != null) {
+                            Navigator.of(context).pushReplacementNamed(
+                              AppRoutes.exam,
+                              arguments: examId,
+                            );
+                          } else {
+                            Navigator.of(context).pushReplacementNamed(AppRoutes.navbar);
+                          }
                         },
                         style: OutlinedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),

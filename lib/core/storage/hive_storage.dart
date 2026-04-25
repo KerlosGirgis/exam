@@ -33,4 +33,10 @@ class HiveStorageImpl implements HiveStorageContract {
     var box = Hive.box(boxName);
     await box.clear();
   }
+
+  @override
+  Future<Map<String, dynamic>> getAllData(String boxName) async {
+    var box = Hive.box(boxName);
+    return Map<String, dynamic>.from(box.toMap());
+  }
 }
