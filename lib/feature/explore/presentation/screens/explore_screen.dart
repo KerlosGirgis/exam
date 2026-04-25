@@ -40,17 +40,20 @@ class _ExplorePageState extends State<ExplorePage> {
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
+            selectedIcon: Icon(Icons.home, color: ColorManager.primeColor),
             label: 'Explore',
           ),
           NavigationDestination(
             icon: Icon(Icons.assignment_outlined),
-            selectedIcon: Icon(Icons.assignment),
+            selectedIcon: Icon(
+              Icons.assignment,
+              color: ColorManager.primeColor,
+            ),
             label: 'Result',
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
+            selectedIcon: Icon(Icons.person, color: ColorManager.primeColor),
             label: 'Profile',
           ),
         ],
