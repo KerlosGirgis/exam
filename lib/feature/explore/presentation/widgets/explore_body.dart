@@ -1,4 +1,5 @@
 import 'package:exam/core/utils/color_manager.dart';
+import 'package:exam/core/utils/router/app_routes.dart';
 import 'package:exam/feature/explore/presentation/view_model/explore_cubit.dart';
 import 'package:exam/feature/explore/presentation/view_model/explore_states.dart';
 import 'package:exam/feature/explore/presentation/widgets/search_text_field.dart';
@@ -67,11 +68,17 @@ class ExplorePageBody extends StatelessWidget {
                 return ListView.builder(
                   itemCount: explore!.data?.length,
                   itemBuilder: (context, index) {
+                    final subject = explore.data?[index];
                     return SubjectListView(
                       onTap: () {
-                        print('done');
+                        if (subject?.id != null) {
+                          Navigator.of(context).pushNamed(
+                            AppRoutes.subjectExamScreen,
+                            arguments: subject!.id,
+                          );
+                        }
                       },
-                      subject: explore.data?[index],
+                      subject: subject,
                     );
                   },
                 );

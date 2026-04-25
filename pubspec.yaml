@@ -42,6 +42,10 @@ dependencies:
   flutter_secure_storage: ^10.0.0
   pin_code_fields: ^9.1.0
   json_annotation: ^4.11.0
+  fl_chart: ^1.2.0
+  hive_ce: ^2.19.3
+  path_provider: ^2.1.5
+  hive: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -68,8 +72,8 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #    - assets/images/
+  assets:
+      - assets/images/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
   # For details regarding adding assets from package dependencies, see

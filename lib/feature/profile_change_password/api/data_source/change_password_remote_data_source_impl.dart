@@ -31,7 +31,7 @@ class ChangePasswordRemoteDataSourceImpl implements ChangePasswordRemoteDataSour
     );
 
     final response = await changePasswordService.changePassword(
-      'Bearer $token',
+      token,
       request,
     );
 

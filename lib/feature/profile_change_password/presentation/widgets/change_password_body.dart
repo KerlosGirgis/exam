@@ -43,30 +43,46 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
   void _onChangePasswordPressed() async {
     setState(() => _autoValidate = true);
 
-    if (_formKey.currentState!.validate()) {
-      final secureStorage = GetIt.I<SecureStorage>();
-      final token = await secureStorage.getToken(key: 'auth_token');
+    if (!(_formKey.currentState?.validate() ?? false)) return;
 
-      if (token == null) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Authentication required'),
-              backgroundColor: ColorManager.errorColor,
-            ),
-          );
-        }
-        return;
-      }
+    final oldPassword = _cubit.currentPasswordController.text.trim();
+    final newPassword = _cubit.newPasswordController.text.trim();
+    final confirmPassword = _cubit.confirmPasswordController.text.trim();
 
+    if (newPassword == oldPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(AppTextConstants.newPasswordSameAsOld),
+          backgroundColor: ColorManager.errorColor,
+        ),
+      );
+      return;
+    }
+
+    final secureStorage = GetIt.I<SecureStorage>();
+    final token = await secureStorage.getToken(key: 'auth_token');
+
+    if (token == null) {
       if (mounted) {
-        _cubit.add(ChangePasswordButtonPressed(
-          token: token,
-          oldPassword: _cubit.currentPasswordController.text.trim(),
-          password: _cubit.newPasswordController.text.trim(),
-          rePassword: _cubit.confirmPasswordController.text.trim(),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Authentication required'),
+            backgroundColor: ColorManager.errorColor,
+          ),
+        );
       }
+      return;
+    }
+
+    if (mounted) {
+      _cubit.add(
+        ChangePasswordButtonPressed(
+          token: token,
+          oldPassword: oldPassword,
+          password: newPassword,
+          rePassword: confirmPassword,
+        ),
+      );
     }
   }
 
@@ -95,7 +111,7 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
             ),
           );
           _cubit.clearControllers();
-          Navigator.pop(context);
+          Navigator.of(context).pop();
         } else if (changePasswordState?.isError ?? false) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -124,7 +140,7 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
                   controller: _cubit.currentPasswordController,
                   isPassword: true,
                   obscureText: true,
-                  validator: (v) => Validation.passwordValidation(v),
+                  validator: (v) => AppValidators.passwordValidation(v),
                 ),
                 const SizedBox(height: 16),
                 CustomTextfield(
@@ -133,7 +149,15 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
                   controller: _cubit.newPasswordController,
                   isPassword: true,
                   obscureText: true,
-                  validator: (v) => Validation.passwordValidation(v),
+                  validator: (v) {
+                    final base = AppValidators.passwordValidation(v);
+                    if (base != null) return base;
+                    if (v != null &&
+                        v == _cubit.currentPasswordController.text) {
+                      return AppTextConstants.newPasswordSameAsOld;
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(height: 16),
                 CustomTextfield(
@@ -142,7 +166,7 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
                   controller: _cubit.confirmPasswordController,
                   isPassword: true,
                   obscureText: true,
-                  validator: (v) => Validation.passconfirmValidation(
+                  validator: (v) => AppValidators.passconfirmValidation(
                     v,
                     _cubit.newPasswordController,
                   ),

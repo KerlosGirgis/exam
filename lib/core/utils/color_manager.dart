@@ -10,4 +10,6 @@ abstract class ColorManager {
   static const Color whiteColor = Color(0xffF9F9F9);
   static const Color whiteBlueColor = Color(0xffDFE7F7);
   static const Color disabledColor = Color(0xff878787);
+  static const Color navBarColor = Color(0xffEDEFF3);
+  static const Color activeNavBarColor = Color(0xffCCD7EB);
 }

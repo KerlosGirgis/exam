@@ -13,9 +13,9 @@ abstract class ChangePasswordService {
   @factoryMethod
   factory ChangePasswordService(Dio dio) = _ChangePasswordService;
 
-  @POST(AppEndPoints.changePassword)
+  @PATCH(AppEndPoints.changePassword)
   Future<ChangePasswordResponse> changePassword(
-    @Header("Authorization") String authorization,
+    @Header('token') String token,
     @Body() ChangePasswordRequest request,
   );
 }
