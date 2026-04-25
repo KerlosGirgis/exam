@@ -4,9 +4,10 @@ import 'package:exam/feature/explore/presentation/view_model/explore_cubit.dart'
 import 'package:exam/feature/explore/presentation/view_model/explore_intent.dart';
 import 'package:exam/feature/explore/presentation/widgets/explore_body.dart';
 import 'package:exam/feature/profile/presentation/screens/profile_screen.dart';
-import 'package:exam/feature/result/presentation/screens/result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../results/presentation/screens/results_screen.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
@@ -23,7 +24,7 @@ class _ExplorePageState extends State<ExplorePage> {
       create: (_) => getIt<ExploreCubit>()..doIntent(LoadSubjectsIntent()),
       child: const SafeArea(child: ExplorePageBody()),
     ),
-    const ResultScreen(),
+    const ResultsScreen(),
     ProfileScreen(onBack: () => setState(() => _currentIndex = 0)),
   ];
 

@@ -104,7 +104,7 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
   Future<void> _onFinishExam(FinishExamEvent event, Emitter<ExamState> emit) async {
     _timer?.cancel();
     final questions = state.data?.questions;
-    if (questions == null) return;
+    if (questions == null || questions.isEmpty) return;
 
     int correctAnswersCount = 0;
     for (int i = 0; i < questions.length; i++) {
@@ -115,10 +115,38 @@ class ExamBloc extends Bloc<ExamEvent, ExamState> {
       }
     }
 
+    String? subjectId;
+    String? subjectName;
+    String? subjectIcon;
+    String? examTitle;
+    final firstQuestion = questions.first;
+    
+    examTitle = firstQuestion.exam?.title;
+
+    if (firstQuestion.subject != null && firstQuestion.subject is Map) {
+      final subjectMap = firstQuestion.subject as Map;
+      subjectId = subjectMap['_id']?.toString() ?? subjectMap['id']?.toString();
+      subjectName = subjectMap['name']?.toString();
+      subjectIcon = subjectMap['icon']?.toString();
+    } else if (firstQuestion.exam?.subject != null) {
+      subjectId = firstQuestion.exam!.subject;
+    }
+
     final examData = {
       'score': correctAnswersCount,
       'total': questions.length,
       'date': DateTime.now().toIso8601String(),
+      'examTitle': examTitle,
+      'subjectId': subjectId,
+      'subjectName': subjectName,
+      'subjectIcon': subjectIcon,
+      'questions': questions.map((q) => {
+        'id': q.id,
+        'question': q.question,
+        'answers': q.answers?.map((a) => {'answer': a.answer, 'key': a.key}).toList(),
+        'correct': q.correct,
+      }).toList(),
+      'userAnswers': state.answers.map((key, value) => MapEntry(key.toString(), value)),
     };
 
     await _storeExamResultUseCase(examData);
