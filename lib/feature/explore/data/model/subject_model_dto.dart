@@ -1,4 +1,4 @@
-import 'package:exam/feature/explore/domain/model/subject_model.dart';
+import 'package:exam/feature/explore/domain/model/subject_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'subject_model_dto.g.dart';
@@ -20,7 +20,7 @@ class SubjectModelDto {
       _$SubjectModelDtoFromJson(json);
   Map<String, dynamic> toJson() => _$SubjectModelDtoToJson(this);
 
-  SubjectModel toModel() {
-    return SubjectModel(id: id, name: name, icon: icon, createdAt: createdAt);
+  SubjectEntity toEntity() {
+    return SubjectEntity(id: id, name: name, icon: icon, createdAt: createdAt);
   }
 }

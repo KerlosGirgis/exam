@@ -1,20 +1,14 @@
 import 'package:exam/config/base_state/base_state.dart';
-import 'package:exam/feature/auth/register/domain/model/user_model.dart';
+import 'package:exam/feature/auth/register/domain/model/register_details.dart';
 
 class RegisterState {
-  BaseState<RegisterModel>? registerState;
+  final BaseState<RegisterDetails>? registerState;
 
-  bool isFormFilled;
+  const RegisterState({this.registerState});
 
-  RegisterState({this.registerState, this.isFormFilled = false});
-
-  RegisterState copyWith({
-    BaseState<RegisterModel>? registerState,
-    bool? isFormFilled,
-  }) {
+  RegisterState copyWith({BaseState<RegisterDetails>? registerState}) {
     return RegisterState(
       registerState: registerState ?? this.registerState,
-      isFormFilled: isFormFilled ?? this.isFormFilled,
     );
   }
 }

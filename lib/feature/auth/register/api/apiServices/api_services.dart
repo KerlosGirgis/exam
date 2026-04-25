@@ -7,7 +7,7 @@ import 'package:retrofit/retrofit.dart';
 
 part 'api_services.g.dart';
 
-@injectable
+@lazySingleton
 @RestApi()
 abstract class RegisterApiService {
   @factoryMethod

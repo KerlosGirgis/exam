@@ -1,16 +1,4 @@
-class RegisterModel {
-  final String message;
-  final String token;
-  final UserModel user;
-
-  const RegisterModel({
-    required this.message,
-    required this.token,
-    required this.user,
-  });
-}
-
-class UserModel {
+class UserEntity {
   final String id;
   final String username;
   final String firstName;
@@ -21,7 +9,7 @@ class UserModel {
   final bool isVerified;
   final String createdAt;
 
-  const UserModel({
+  const UserEntity({
     required this.id,
     required this.username,
     required this.firstName,

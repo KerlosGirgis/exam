@@ -23,11 +23,11 @@ class ChangePasswordScreen extends StatelessWidget {
             icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
             onPressed: () => Navigator.of(context).pop(),
           ),
-          title: Padding(
-            padding: const EdgeInsets.only(left: 8.0),
+          title: const Padding(
+            padding: EdgeInsets.only(left: 8.0),
             child: Text(
-              AppTextConstants.resetPassword,
-              style: const TextStyle(color: Colors.black),
+              AppTextConstants.changePassword,
+              style: TextStyle(color: Colors.black),
             ),
           ),
         ),

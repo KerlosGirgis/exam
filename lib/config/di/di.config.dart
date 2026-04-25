@@ -61,8 +61,8 @@ import '../../feature/auth/register/data/dataSource/register_remote_datasource_c
 import '../../feature/auth/register/data/repo/register_repo_impl.dart' as _i820;
 import '../../feature/auth/register/domain/repo/register_repo_contract.dart'
     as _i628;
-import '../../feature/auth/register/domain/useCases/register_usecase.dart'
-    as _i62;
+import '../../feature/auth/register/domain/useCases/register_use_case.dart'
+    as _i198;
 import '../../feature/auth/register/presentation/viewModel/register_cubit.dart'
     as _i583;
 import '../../feature/exam/api/data_sources/exam_local_data_source_impl.dart'
@@ -102,7 +102,7 @@ import '../../feature/explore/data/data_source/explore_remote_datasource.dart'
     as _i407;
 import '../../feature/explore/data/repo/explore_repo_impl.dart' as _i495;
 import '../../feature/explore/domain/repo/explore_repo_contract.dart' as _i679;
-import '../../feature/explore/domain/usecase/subjects_usecase.dart' as _i413;
+import '../../feature/explore/domain/usecase/subjects_use_case.dart' as _i281;
 import '../../feature/explore/presentation/view_model/explore_cubit.dart'
     as _i696;
 import '../../feature/profile/api/data_sources/profile_remote_data_source_impl.dart'
@@ -129,8 +129,8 @@ import '../../feature/profile_change_password/data/repo/change_password_repo_imp
     as _i942;
 import '../../feature/profile_change_password/domain/repo/change_password_repo.dart'
     as _i38;
-import '../../feature/profile_change_password/domain/usecase/change_password_usecase.dart'
-    as _i330;
+import '../../feature/profile_change_password/domain/usecase/change_password_use_case.dart'
+    as _i529;
 import '../../feature/profile_change_password/presentation/view_model/change_password_cubit.dart'
     as _i757;
 import '../dio/dio_module.dart' as _i977;
@@ -154,51 +154,59 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i108.SecureStorage>(
       () => _i108.SecureStorageImpl(gh<_i558.FlutterSecureStorage>()),
     );
+    gh.lazySingleton<_i620.RegisterApiService>(
+      () => _i620.RegisterApiService(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i461.ExploreService>(
+      () => _i461.ExploreService(gh<_i361.Dio>()),
+    );
+    gh.lazySingleton<_i225.ChangePasswordService>(
+      () => _i225.ChangePasswordService(gh<_i361.Dio>()),
+    );
     gh.factory<_i439.ForgetPasswordApiClient>(
       () => _i439.ForgetPasswordApiClient(gh<_i361.Dio>()),
     );
     gh.factory<_i1057.LoginApiClient>(
       () => _i1057.LoginApiClient(gh<_i361.Dio>()),
     );
-    gh.factory<_i620.RegisterApiService>(
-      () => _i620.RegisterApiService(gh<_i361.Dio>()),
-    );
     gh.factory<_i922.ExamApiClient>(() => _i922.ExamApiClient(gh<_i361.Dio>()));
     gh.factory<_i199.ExamSubjectApiClient>(
       () => _i199.ExamSubjectApiClient(gh<_i361.Dio>()),
     );
-    gh.factory<_i461.ExploreService>(
-      () => _i461.ExploreService(gh<_i361.Dio>()),
-    );
     gh.factory<_i365.ProfileApiClient>(
       () => _i365.ProfileApiClient(gh<_i361.Dio>()),
-    );
-    gh.factory<_i225.ChangePasswordService>(
-      () => _i225.ChangePasswordService(gh<_i361.Dio>()),
-    );
-    gh.factory<_i407.ExploreRemoteDatasource>(
-      () => _i508.ExploreDataSourceImp(
-        gh<_i461.ExploreService>(),
-        gh<_i108.SecureStorage>(),
-      ),
     );
     gh.factory<_i51.LoginLocalDataSource>(
       () => _i51.LoginLocalDataSourceImpl(gh<_i108.SecureStorage>()),
     );
     gh.factory<_i643.ChangePasswordRemoteDataSource>(
       () => _i416.ChangePasswordRemoteDataSourceImpl(
-        changePasswordService: gh<_i225.ChangePasswordService>(),
-        secureStorage: gh<_i108.SecureStorage>(),
+        gh<_i225.ChangePasswordService>(),
       ),
+    );
+    gh.factory<_i407.ExploreRemoteDatasource>(
+      () => _i508.ExploreRemoteDataSourceImpl(gh<_i461.ExploreService>()),
     );
     gh.factory<_i32.ForgetPasswordRemoteDataSourcesContract>(
       () => _i913.ForgetPasswordRemoteDataSourcesImpl(
         gh<_i439.ForgetPasswordApiClient>(),
       ),
     );
+    gh.factory<_i38.ChangePasswordRepo>(
+      () => _i942.ChangePasswordRepoImpl(
+        gh<_i643.ChangePasswordRemoteDataSource>(),
+        gh<_i108.SecureStorage>(),
+      ),
+    );
     gh.factory<_i907.ForgetPasswordRepoContract>(
       () => _i710.ForgetPasswordRepoImpl(
         gh<_i32.ForgetPasswordRemoteDataSourcesContract>(),
+      ),
+    );
+    gh.factory<_i679.ExploreRepo>(
+      () => _i495.ExploreRepoImp(
+        gh<_i407.ExploreRemoteDatasource>(),
+        gh<_i108.SecureStorage>(),
       ),
     );
     gh.factory<_i1012.ExamLocalDataSourceContract>(
@@ -210,19 +218,11 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i108.SecureStorage>(),
       ),
     );
-    gh.factory<_i38.ChangePasswordRepo>(
-      () => _i942.ChangePasswordRepoImpl(
-        gh<_i643.ChangePasswordRemoteDataSource>(),
-      ),
-    );
     gh.factory<_i914.LoginRepository>(
       () => _i393.LoginRepositoryImpl(
         gh<_i493.LoginRemoteDataSource>(),
         gh<_i51.LoginLocalDataSource>(),
       ),
-    );
-    gh.factory<_i679.ExploreRepo>(
-      () => _i495.ExploreRepoImp(gh<_i407.ExploreRemoteDatasource>()),
     );
     gh.factory<_i944.ForgetPasswordUseCase>(
       () => _i944.ForgetPasswordUseCase(gh<_i907.ForgetPasswordRepoContract>()),
@@ -257,14 +257,11 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i700.VerificationCubit>(
       () => _i700.VerificationCubit(gh<_i511.VerifyResetCodeUseCase>()),
     );
-    gh.factory<_i413.SubjectsUseCase>(
-      () => _i413.SubjectsUseCase(gh<_i679.ExploreRepo>()),
+    gh.factory<_i281.SubjectsUseCase>(
+      () => _i281.SubjectsUseCase(gh<_i679.ExploreRepo>()),
     );
     gh.factory<_i58.LoginUseCase>(
       () => _i58.LoginUseCase(gh<_i914.LoginRepository>()),
-    );
-    gh.factory<_i696.ExploreCubit>(
-      () => _i696.ExploreCubit(gh<_i413.SubjectsUseCase>()),
     );
     gh.factory<_i1010.ExamSubjectRepoContract>(
       () => _i919.ExamSubjectRepoImpl(
@@ -274,14 +271,20 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1018.LoginBloc>(
       () => _i1018.LoginBloc(gh<_i58.LoginUseCase>()),
     );
-    gh.factory<_i330.ChangePasswordUseCase>(
-      () => _i330.ChangePasswordUseCase(gh<_i38.ChangePasswordRepo>()),
+    gh.factory<_i529.ChangePasswordUseCase>(
+      () => _i529.ChangePasswordUseCase(gh<_i38.ChangePasswordRepo>()),
     );
     gh.factory<_i628.RegisterRepoContract>(
       () => _i820.RegisterRepoImpl(
         gh<_i755.RegisterRemoteDatasourceContract>(),
         gh<_i51.LoginLocalDataSource>(),
       ),
+    );
+    gh.factory<_i757.ChangePasswordCubit>(
+      () => _i757.ChangePasswordCubit(gh<_i529.ChangePasswordUseCase>()),
+    );
+    gh.factory<_i696.ExploreCubit>(
+      () => _i696.ExploreCubit(gh<_i281.SubjectsUseCase>()),
     );
     gh.factory<_i36.EditProfileUseCase>(
       () => _i36.EditProfileUseCase(gh<_i334.ProfileRepoContract>()),
@@ -307,11 +310,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i307.StoreExamResultUseCase>(
       () => _i307.StoreExamResultUseCase(gh<_i345.ExamRepoContract>()),
     );
-    gh.factory<_i757.ChangePasswordCubit>(
-      () => _i757.ChangePasswordCubit(gh<_i330.ChangePasswordUseCase>()),
-    );
-    gh.factory<_i62.RegisterUsecase>(
-      () => _i62.RegisterUsecase(gh<_i628.RegisterRepoContract>()),
+    gh.factory<_i198.RegisterUseCase>(
+      () => _i198.RegisterUseCase(gh<_i628.RegisterRepoContract>()),
     );
     gh.factory<_i784.ProfileCubit>(
       () => _i784.ProfileCubit(
@@ -323,7 +323,7 @@ extension GetItInjectableX on _i174.GetIt {
       () => _i870.ExamSubjectCubit(gh<_i930.ExamSubjectUseCase>()),
     );
     gh.factory<_i583.RegisterCubit>(
-      () => _i583.RegisterCubit(gh<_i62.RegisterUsecase>()),
+      () => _i583.RegisterCubit(gh<_i198.RegisterUseCase>()),
     );
     gh.factory<_i635.ExamBloc>(
       () => _i635.ExamBloc(

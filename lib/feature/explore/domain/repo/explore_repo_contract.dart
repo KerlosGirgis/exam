@@ -1,6 +1,6 @@
 import 'package:exam/config/base_response/base_response.dart';
-import 'package:exam/feature/explore/domain/model/subject_model.dart';
+import 'package:exam/feature/explore/domain/model/subject_entity.dart';
 
-abstract class ExploreRepo {
-  Future<BaseResponse<List<SubjectModel>>> getAllSubjects();
+abstract interface class ExploreRepo {
+  Future<BaseResponse<List<SubjectEntity>>> getAllSubjects();
 }

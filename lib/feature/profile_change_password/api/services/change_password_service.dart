@@ -7,7 +7,7 @@ import 'package:retrofit/retrofit.dart';
 
 part 'change_password_service.g.dart';
 
-@injectable
+@lazySingleton
 @RestApi()
 abstract class ChangePasswordService {
   @factoryMethod

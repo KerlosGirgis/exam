@@ -1,9 +1,10 @@
+import 'package:exam/core/constant/app_text_constants.dart';
 import 'package:exam/core/utils/color_manager.dart';
 import 'package:exam/core/utils/router/app_routes.dart';
 import 'package:exam/feature/explore/presentation/view_model/explore_cubit.dart';
 import 'package:exam/feature/explore/presentation/view_model/explore_states.dart';
 import 'package:exam/feature/explore/presentation/widgets/search_text_field.dart';
-import 'package:exam/feature/explore/presentation/widgets/subjects_list_view.dart';
+import 'package:exam/feature/explore/presentation/widgets/subject_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -18,7 +19,7 @@ class ExplorePageBody extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            "Survey",
+            AppTextConstants.survey,
             style: TextStyle(
               color: ColorManager.primeColor,
               fontSize: 24,
@@ -26,11 +27,10 @@ class ExplorePageBody extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          SearchTextField(exploreCubit: context.read<ExploreCubit>()),
-
+          const SearchTextField(),
           const SizedBox(height: 30),
           const Text(
-            "Browse by subject",
+            AppTextConstants.browseBySubject,
             style: TextStyle(
               color: Colors.black,
               fontSize: 20,
@@ -40,9 +40,11 @@ class ExplorePageBody extends StatelessWidget {
           const SizedBox(height: 16),
           Expanded(
             child: BlocConsumer<ExploreCubit, ExploreStates>(
+              listenWhen: (prev, curr) =>
+                  prev.exploreState?.errorMessage !=
+                  curr.exploreState?.errorMessage,
               listener: (context, state) {
                 final explore = state.exploreState;
-
                 if (explore?.errorMessage != null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(explore!.errorMessage!)),
@@ -59,7 +61,7 @@ class ExplorePageBody extends StatelessWidget {
                 if (explore?.data?.isEmpty ?? true) {
                   return const Center(
                     child: Text(
-                      "No subjects found",
+                      AppTextConstants.noSubjectsFound,
                       style: TextStyle(fontSize: 16, color: Colors.grey),
                     ),
                   );
@@ -69,7 +71,8 @@ class ExplorePageBody extends StatelessWidget {
                   itemCount: explore!.data?.length,
                   itemBuilder: (context, index) {
                     final subject = explore.data?[index];
-                    return SubjectListView(
+                    return SubjectCard(
+                      subject: subject,
                       onTap: () {
                         if (subject?.id != null) {
                           Navigator.of(context).pushNamed(
@@ -78,7 +81,6 @@ class ExplorePageBody extends StatelessWidget {
                           );
                         }
                       },
-                      subject: subject,
                     );
                   },
                 );

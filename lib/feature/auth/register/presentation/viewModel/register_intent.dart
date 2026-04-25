@@ -19,8 +19,3 @@ class DoRegisterIntent extends RegisterIntent {
     required this.confirmPassword,
   });
 }
-
-class CheckFormFilledIntent extends RegisterIntent {
-  final bool isFilled;
-  CheckFormFilledIntent(this.isFilled);
-}

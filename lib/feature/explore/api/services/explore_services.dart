@@ -6,12 +6,12 @@ import 'package:retrofit/retrofit.dart';
 
 part 'explore_services.g.dart';
 
-@injectable
+@lazySingleton
 @RestApi()
 abstract class ExploreService {
   @factoryMethod
   factory ExploreService(Dio dio) = _ExploreService;
 
   @GET(AppEndPoints.subjectEndpoint)
-  Future<SubjectsResponseModel> getAllSubjects(@Header("token") String token);
+  Future<SubjectsResponseModel> getAllSubjects(@Header('token') String token);
 }

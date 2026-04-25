@@ -1,12 +1,12 @@
 import 'package:exam/config/base_state/base_state.dart';
-import 'package:exam/feature/explore/domain/model/subject_model.dart';
+import 'package:exam/feature/explore/domain/model/subject_entity.dart';
 
 class ExploreStates {
-  final BaseState<List<SubjectModel>>? exploreState;
+  final BaseState<List<SubjectEntity>>? exploreState;
 
-  ExploreStates({this.exploreState});
+  const ExploreStates({this.exploreState});
 
-  ExploreStates copyWith({BaseState<List<SubjectModel>>? exploreState}) {
+  ExploreStates copyWith({BaseState<List<SubjectEntity>>? exploreState}) {
     return ExploreStates(exploreState: exploreState ?? this.exploreState);
   }
 }

@@ -1,3 +1,5 @@
+import 'package:exam/core/constant/app_text_constants.dart';
+import 'package:exam/core/utils/router/app_routes.dart';
 import 'package:exam/feature/auth/register/presentation/viewModel/register_cubit.dart';
 import 'package:exam/feature/auth/register/presentation/viewModel/register_state.dart';
 import 'package:exam/feature/auth/register/presentation/widgets/already_have_account.dart';
@@ -5,67 +7,47 @@ import 'package:exam/feature/auth/register/presentation/widgets/register_form.da
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RegisterBody extends StatefulWidget {
+class RegisterBody extends StatelessWidget {
   const RegisterBody({super.key});
 
   @override
-  State<RegisterBody> createState() => _RegisterBodyState();
-}
-
-class _RegisterBodyState extends State<RegisterBody> {
-  final _formKey = GlobalKey<FormState>();
-  final bool _autoValidate = false;
-
-  void _resetForm(BuildContext context) {
-    final cubit = context.read<RegisterCubit>();
-    cubit.clearControllers();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {});
-    });
-    Future.delayed(const Duration(seconds: 3), () {
-      if (context.mounted){
-        Navigator.of(context).pop();
-      }
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RegisterCubit, RegisterState>(
+    return BlocListener<RegisterCubit, RegisterState>(
+      listenWhen: (prev, curr) =>
+          prev.registerState?.isSuccess != curr.registerState?.isSuccess ||
+          prev.registerState?.errorMessage != curr.registerState?.errorMessage,
       listener: (context, state) {
         if (state.registerState?.isSuccess == true) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text("Signup Successful!")));
-          _resetForm(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text(AppTextConstants.signupSuccess)),
+          );
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            AppRoutes.explore,
+            (route) => false,
+          );
         } else if (state.registerState?.isError == true) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text(
-                state.registerState?.errorMessage ?? "An error occurred",
+                state.registerState?.errorMessage ??
+                    AppTextConstants.genericError,
               ),
             ),
           );
         }
       },
-      builder: (context, state) {
-        return SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
-            child: Column(
-              children: [
-                RegisterForm(
-                  key: UniqueKey(),
-                  formKey: _formKey,
-                  autoValidate: _autoValidate,
-                ),
-                const SizedBox(height: 10),
-                const AlreadyHaveAccount(),
-              ],
-            ),
+      child: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 20),
+          child: Column(
+            children: const [
+              RegisterForm(),
+              SizedBox(height: 10),
+              AlreadyHaveAccount(),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }

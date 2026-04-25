@@ -11,9 +11,9 @@ class AlreadyHaveAccount extends StatelessWidget {
     return Text.rich(
       TextSpan(
         children: [
-          TextSpan(
+          const TextSpan(
             text: AppTextConstants.alreadyHaveAccount,
-            style: const TextStyle(fontSize: 16, color: Colors.black),
+            style: TextStyle(fontSize: 16, color: Colors.black),
           ),
           TextSpan(
             text: AppTextConstants.login,
@@ -24,9 +24,7 @@ class AlreadyHaveAccount extends StatelessWidget {
               decorationThickness: 2,
             ),
             recognizer: TapGestureRecognizer()
-              ..onTap = () {
-                Navigator.pop(context);
-              },
+              ..onTap = () => Navigator.pop(context),
           ),
         ],
       ),

@@ -7,14 +7,14 @@ import '../../core/constant/end_point.dart';
 abstract class DioModule {
   @singleton
   Dio get dio => Dio(
-    BaseOptions(
-      baseUrl: EndPoint.baseUrl,
-      connectTimeout: const Duration(seconds: 10),
-      receiveTimeout: const Duration(seconds: 10),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    ),
-  );
+        BaseOptions(
+          baseUrl: EndPoint.baseUrl,
+          connectTimeout: const Duration(seconds: 10),
+          receiveTimeout: const Duration(seconds: 10),
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
 }

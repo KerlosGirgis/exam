@@ -1,13 +1,13 @@
 import 'package:exam/config/base_state/base_state.dart';
-import 'package:exam/feature/profile_change_password/data/model/change_password_response.dart';
+import 'package:exam/feature/profile_change_password/domain/model/change_password_details.dart';
 
 class ChangePasswordState {
-  final BaseState<ChangePasswordModel>? changePasswordState;
+  final BaseState<ChangePasswordDetails>? changePasswordState;
 
-  ChangePasswordState({this.changePasswordState});
+  const ChangePasswordState({this.changePasswordState});
 
   ChangePasswordState copyWith({
-    BaseState<ChangePasswordModel>? changePasswordState,
+    BaseState<ChangePasswordDetails>? changePasswordState,
   }) {
     return ChangePasswordState(
       changePasswordState: changePasswordState ?? this.changePasswordState,

@@ -1,4 +1,5 @@
-import 'package:exam/feature/auth/register/domain/model/user_model.dart';
+import 'package:exam/feature/auth/register/domain/model/register_details.dart';
+import 'package:exam/feature/auth/register/domain/model/user_entity.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'register_response.g.dart';
@@ -24,13 +25,13 @@ class RegisterResponse {
 
   Map<String, dynamic> toJson() => _$RegisterResponseToJson(this);
 
-  RegisterModel toDomain() {
-    return RegisterModel(
+  RegisterDetails toDomain() {
+    return RegisterDetails(
       message: message ?? "",
       token: token ?? "",
       user:
-          user?.toModel() ??
-          const UserModel(
+          user?.toEntity() ??
+          const UserEntity(
             id: "",
             username: "",
             firstName: "",
@@ -91,8 +92,8 @@ class UserResponse {
 
   Map<String, dynamic> toJson() => _$UserResponseToJson(this);
 
-  UserModel toModel() {
-    return UserModel(
+  UserEntity toEntity() {
+    return UserEntity(
       id: id ?? "",
       username: username ?? "",
       firstName: firstName ?? "",

@@ -1,3 +1,4 @@
+import 'package:exam/feature/profile_change_password/domain/model/change_password_details.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'change_password_response.g.dart';
@@ -9,24 +10,13 @@ class ChangePasswordResponse {
   @JsonKey(name: 'token')
   final String? token;
 
-  ChangePasswordResponse({
-    this.message,
-    this.token,
-  });
+  ChangePasswordResponse({this.message, this.token});
 
   factory ChangePasswordResponse.fromJson(Map<String, dynamic> json) =>
       _$ChangePasswordResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$ChangePasswordResponseToJson(this);
 
-  ChangePasswordModel toModel() {
-    return ChangePasswordModel(message: message, token: token);
-  }
-}
-
-class ChangePasswordModel {
-  final String? message;
-  final String? token;
-
-  ChangePasswordModel({this.message, this.token});
+  ChangePasswordDetails toDetails() =>
+      ChangePasswordDetails(message: message, token: token);
 }
