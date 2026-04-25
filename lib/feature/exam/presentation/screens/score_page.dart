@@ -25,7 +25,7 @@ class ScorePage extends StatelessWidget {
         elevation: 0,
         centerTitle: false,
         leading: IconButton(onPressed: (){
-          Navigator.of(context).pushReplacementNamed(AppRoutes.navbar);
+          Navigator.of(context).pushReplacementNamed(AppRoutes.explore);
         }, icon: Icon(Icons.arrow_back_ios_new)),
         titleSpacing: 0,
         title: const Text(
