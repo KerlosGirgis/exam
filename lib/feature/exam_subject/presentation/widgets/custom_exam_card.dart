@@ -1,107 +1,106 @@
 import 'package:exam/core/utils/color_manager.dart';
 import 'package:exam/core/utils/router/app_routes.dart';
-import 'package:exam/core/utils/widgets/custom_text.dart';
 import 'package:exam/feature/exam_subject/domain/models/exam_subject_model.dart';
 import 'package:flutter/material.dart';
 
 class CustomExamCard extends StatelessWidget {
-  // final String title;
-  // final int numberOfQuestions;
-  // final String duration;
-  // final double fromScore;
-  // final double toScore;
-  // final String imagePath;
-
   const CustomExamCard({
     super.key,
     required this.examSubjectModel,
-    // required this.title,
-    // required this.numberOfQuestions,
-    // required this.duration,
-    // required this.fromScore,
-    // required this.toScore,
-    // required this.imagePath,
   });
   final ExamSubjectModel examSubjectModel;
+
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(
-          context,
-          AppRoutes.subjectExamDetailsScreen,
-          arguments: examSubjectModel,
-        );
-      },
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: ColorManager.whiteColor,
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: ColorManager.blackColor.withValues(alpha: 0.2),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Icon(
-              Icons.settings_ethernet_outlined,
-              size: 50,
-              color: ColorManager.blackColor,
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      CustomText(
-                        text: examSubjectModel.title,
-                        fontWeight: FontWeight.w500,
-                        size: 16,
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: ColorManager.whiteBlueColor),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: .04),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: InkWell(
+        onTap: () {
+          Navigator.pushNamed(
+            context,
+            AppRoutes.subjectExamDetailsScreen,
+            arguments: examSubjectModel,
+          );
+        },
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              // Icon Container
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: ColorManager.whiteBlueColor.withValues(alpha: 0.5),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.assignment_outlined,
+                  color: ColorManager.primeColor,
+                  size: 28,
+                ),
+              ),
+              const SizedBox(width: 16),
+              // Details
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      examSubjectModel.title,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                         color: ColorManager.blackColor,
                       ),
-                      Spacer(),
-                      CustomText(
-                        text: "${examSubjectModel.duration} Minutes",
-                        color: ColorManager.primeColor,
-                        fontWeight: FontWeight.w400,
-                        size: 13,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 4),
-                  CustomText(
-                    text: '${examSubjectModel.numberOfQuestions} Question',
-                    fontWeight: FontWeight.w400,
-                    size: 13,
-                    color: ColorManager.hintColor,
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      CustomText(
-                        text: 'From:',
-                        fontWeight: FontWeight.w400,
-                        size: 12,
-                      ),
-                      const SizedBox(width: 15),
-                      CustomText(
-                        text: 'To:',
-                        fontWeight: FontWeight.w400,
-                        size: 12,
-                      ),
-                    ],
-                  ),
-                ],
+                    ),
+                    const SizedBox(height: 6),
+                    Row(
+                      children: [
+                        const Icon(Icons.help_outline, size: 14, color: ColorManager.greyColor),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${examSubjectModel.numberOfQuestions} Questions',
+                          style: const TextStyle(
+                            color: ColorManager.greyColor,
+                            fontSize: 13,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        const Icon(Icons.timer_outlined, size: 14, color: ColorManager.greyColor),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${examSubjectModel.duration} Min',
+                          style: const TextStyle(
+                            color: ColorManager.greyColor,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              const Icon(
+                Icons.arrow_forward_ios,
+                size: 16,
+                color: ColorManager.hintColor,
+              ),
+            ],
+          ),
         ),
       ),
     );

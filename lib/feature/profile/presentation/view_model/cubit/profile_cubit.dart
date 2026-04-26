@@ -1,4 +1,6 @@
 import 'package:exam/config/base_response/base_response.dart';
+import 'package:exam/core/storage/hive_storage_contract.dart';
+import 'package:exam/core/storage/secure_storage.dart';
 import 'package:exam/feature/profile/data/models/request/edit_profile_request.dart';
 import 'package:exam/feature/profile/domain/models/user_data_model.dart';
 import 'package:exam/feature/profile/domain/use_case/edit_profile_use_case.dart';
@@ -12,6 +14,9 @@ import 'package:injectable/injectable.dart';
 class ProfileCubit extends Cubit<ProfileState> {
   final GetUserProfileUseCase _getUserProfileUseCase;
   final EditProfileUseCase _editProfileUseCase;
+  final SecureStorage _secureStorage;
+  final HiveStorageContract _hiveStorage;
+
   final formKey = GlobalKey<FormState>();
   final usernameController = TextEditingController();
   final firstNameController = TextEditingController();
@@ -21,8 +26,45 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   String? _lastLoadedUserId;
 
-  ProfileCubit(this._getUserProfileUseCase, this._editProfileUseCase)
-    : super(ProfileState());
+  ProfileCubit(
+    this._getUserProfileUseCase,
+    this._editProfileUseCase,
+    this._secureStorage,
+    this._hiveStorage,
+  ) : super(ProfileState()) {
+    usernameController.addListener(_checkForChanges);
+    firstNameController.addListener(_checkForChanges);
+    lastNameController.addListener(_checkForChanges);
+    emailController.addListener(_checkForChanges);
+    phoneController.addListener(_checkForChanges);
+  }
+
+  void _checkForChanges() {
+    if (state.profile == null) return;
+
+    final user = state.profile!;
+    final currentHasChanges = 
+        usernameController.text != user.username ||
+        firstNameController.text != user.firstName ||
+        lastNameController.text != user.lastName ||
+        emailController.text != user.email ||
+        phoneController.text != user.phone;
+
+    if (currentHasChanges != state.hasChanges) {
+      emit(state.copyWith(hasChangesParam: currentHasChanges));
+    }
+  }
+
+  Future<void> logout() async {
+    emit(state.copyWith(isLoggingOutParam: true));
+    try {
+      await _secureStorage.deleteToken(key: 'auth_token');
+      await _hiveStorage.clearBox('exams_history');
+      emit(state.copyWith(isLoggingOutParam: false, logoutSuccessParam: true));
+    } catch (e) {
+      emit(state.copyWith(isLoggingOutParam: false, logoutSuccessParam: false));
+    }
+  }
 
   Future<void> getProfile() async {
     emit(
@@ -58,6 +100,9 @@ class ProfileCubit extends Cubit<ProfileState> {
     emailController.text = user.email;
     phoneController.text = user.phone;
     _lastLoadedUserId = user.id;
+    
+    // Ensure hasChanges is false after filling from source
+    emit(state.copyWith(hasChangesParam: false));
   }
 
   Future<void> editProfile(EditProfileRequest request) async {
@@ -108,6 +153,11 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   @override
   Future<void> close() {
+    usernameController.removeListener(_checkForChanges);
+    firstNameController.removeListener(_checkForChanges);
+    lastNameController.removeListener(_checkForChanges);
+    emailController.removeListener(_checkForChanges);
+    phoneController.removeListener(_checkForChanges);
     usernameController.dispose();
     firstNameController.dispose();
     lastNameController.dispose();

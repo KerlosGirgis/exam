@@ -19,276 +19,221 @@ class ScorePage extends StatelessWidget {
     final int incorrect = total - score;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: ColorManager.whiteColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.white,
         elevation: 0,
-        centerTitle: false,
-        leading: IconButton(onPressed: (){
-          Navigator.of(context).pushReplacementNamed(AppRoutes.explore);
-        }, icon: Icon(Icons.arrow_back_ios_new)),
-        titleSpacing: 0,
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed(AppRoutes.explore);
+          },
+          icon: const Icon(Icons.close, color: ColorManager.blackColor),
+        ),
         title: const Text(
           'Exam Score',
           style: TextStyle(
-            fontSize: 32,
-            fontWeight: FontWeight.w500,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
             color: ColorManager.blackColor,
           ),
         ),
-        automaticallyImplyLeading: false,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            const Text(
-              'Your Score',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: ColorManager.blackColor,
-              ),
-            ),
-            const SizedBox(height: 40),
-            Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: SizedBox(
-                    height: 200,
-                    child: Stack(
-                      alignment: Alignment.center,
-                      children: [
-                        PieChart(
-                          PieChartData(
-                            sectionsSpace: 0,
-                            centerSpaceRadius: 70,
-                            startDegreeOffset: -90,
-                            sections: [
-                              PieChartSectionData(
-                                color: ColorManager.primeColor,
-                                value: score.toDouble(),
-                                radius: 15,
-                                showTitle: false,
-                                cornerRadius: 22
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            children: [
+              // Result Card
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 15,
+                      offset: const Offset(0, 5),
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    const Text(
+                      'Your Performance',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: ColorManager.greyColor,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    // Chart
+                    SizedBox(
+                      height: 200,
+                      child: Stack(
+                        alignment: Alignment.center,
+                        children: [
+                          PieChart(
+                            PieChartData(
+                              sectionsSpace: 4,
+                              centerSpaceRadius: 70,
+                              startDegreeOffset: -90,
+                              sections: [
+                                PieChartSectionData(
+                                  color: Colors.green,
+                                  value: score.toDouble(),
+                                  radius: 12,
+                                  showTitle: false,
+                                ),
+                                PieChartSectionData(
+                                  color: ColorManager.errorColor,
+                                  value: incorrect.toDouble(),
+                                  radius: 12,
+                                  showTitle: false,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                '${percentage.toInt()}%',
+                                style: const TextStyle(
+                                  fontSize: 36,
+                                  fontWeight: FontWeight.bold,
+                                  color: ColorManager.blackColor,
+                                ),
                               ),
-                              PieChartSectionData(
-                                value: .3,
-                                radius: 15,
-                                showTitle: false,
-                                color: Colors.white,
-                              ),
-                              PieChartSectionData(
-                                color: ColorManager.errorColor,
-                                value: incorrect.toDouble(),
-                                radius: 15,
-                                showTitle: false,
-                                cornerRadius: 22
-                              ),
-                              PieChartSectionData(
-                                value: .3,
-                                radius: 15,
-                                showTitle: false,
-                                color: Colors.white,
+                              const Text(
+                                'Score',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: ColorManager.greyColor,
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              '${percentage.toInt()}%',
-                              style: const TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                                color: ColorManager.blackColor,
-                              ),
-                            ),
-                          ],
-                        ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    // Stats Row
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _buildStatColumn('Correct', '$score', Colors.green),
+                        _buildStatColumn('Incorrect', '$incorrect', ColorManager.errorColor),
+                        _buildStatColumn('Total', '$total', ColorManager.primeColor),
                       ],
                     ),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "Correct",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: ColorManager.primeColor,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(color: ColorManager.primeColor.withValues(alpha: 0.5)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: ColorManager.primeColor.withValues(alpha: 0.1),
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Text(
-                                  '$score',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: ColorManager.primeColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 16),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "Incorrect",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: ColorManager.errorColor,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(color: ColorManager.errorColor.withValues(alpha: 0.5)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: ColorManager.errorColor.withValues(alpha: 0.1),
-                                      blurRadius: 4,
-                                      offset: const Offset(0, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Text(
-                                  '$incorrect',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: ColorManager.errorColor,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 40),
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (result != null) {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => ExamDetailsScreen(result: result!),
-                              ),
-                            );
-                          } else {
-                            Navigator.of(context).pushNamed(
-                              AppRoutes.results,
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: ColorManager.primeColor,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Text(
-                          'Show Results',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton(
-                        onPressed: () {
-                          if (examId != null) {
-                            Navigator.of(context).pushReplacementNamed(
-                              AppRoutes.exam,
-                              arguments: examId,
-                            );
-                          } else {
-                            Navigator.of(context).pushReplacementNamed(AppRoutes.navbar);
-                          }
-                        },
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          side: const BorderSide(color: ColorManager.primeColor),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Text(
-                          'Start Again',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: ColorManager.primeColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+              ),
+              const SizedBox(height: 40),
+              // Action Buttons
+              Column(
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (result != null) {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ExamDetailsScreen(result: result!),
+                            ),
+                          );
+                        } else {
+                          Navigator.of(context).pushNamed(AppRoutes.results);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: ColorManager.primeColor,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                      child: const Text(
+                        'Review Answers',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                       ),
                     ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 40),
-          ],
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: OutlinedButton(
+                      onPressed: () {
+                        if (examId != null) {
+                          Navigator.of(context).pushReplacementNamed(
+                            AppRoutes.exam,
+                            arguments: examId,
+                          );
+                        } else {
+                          Navigator.of(context).pushReplacementNamed(AppRoutes.explore);
+                        }
+                      },
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        side: const BorderSide(color: ColorManager.primeColor),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      ),
+                      child: const Text(
+                        'Start Again',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: ColorManager.primeColor),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextButton(
+                    onPressed: () => Navigator.of(context).pushReplacementNamed(AppRoutes.explore),
+                    child: const Text(
+                      'Back to Home',
+                      style: TextStyle(color: ColorManager.greyColor, fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _buildStatColumn(String label, String value, Color color) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: color.withValues(alpha: 0.1),
+            shape: BoxShape.circle,
+          ),
+          child: Text(
+            value,
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 13,
+            color: ColorManager.greyColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
     );
   }
 }

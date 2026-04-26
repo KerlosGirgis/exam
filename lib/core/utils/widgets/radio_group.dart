@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../color_manager.dart';
 
 class RadioGroupOption<T> {
   final T value;
@@ -31,7 +32,15 @@ class _RadioGroupState<T> extends State<RadioGroup<T>> {
   @override
   void initState() {
     super.initState();
-    _selectedValues = widget.initialValues ?? [];
+    _selectedValues = List<T>.from(widget.initialValues ?? []);
+  }
+
+  @override
+  void didUpdateWidget(RadioGroup<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialValues != oldWidget.initialValues) {
+      _selectedValues = List<T>.from(widget.initialValues ?? []);
+    }
   }
 
   void _handleSelect(T value) {
@@ -54,51 +63,71 @@ class _RadioGroupState<T> extends State<RadioGroup<T>> {
     return Column(
       children: widget.options.map((option) {
         final isSelected = _selectedValues.contains(option.value);
-        return InkWell(
-          onTap: () => _handleSelect(option.value),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: Row(
-              children: [
-                Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    shape: widget.isMultipleChoice ? BoxShape.rectangle : BoxShape.circle,
-                    borderRadius: widget.isMultipleChoice ? BorderRadius.circular(4) : null,
-                    border: Border.all(
-                      color: isSelected ? Colors.blue : Colors.grey,
-                      width: 2,
+        
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 12.0),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            decoration: BoxDecoration(
+              color: isSelected ? ColorManager.primeColor.withValues(alpha: 0.05) : Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: isSelected ? ColorManager.primeColor : ColorManager.whiteBlueColor,
+                width: isSelected ? 2 : 1,
+              ),
+              boxShadow: isSelected ? [
+                BoxShadow(
+                  color: ColorManager.primeColor.withValues(alpha: 0.1),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                )
+              ] : null,
+            ),
+            child: InkWell(
+              onTap: () => _handleSelect(option.value),
+              borderRadius: BorderRadius.circular(12),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    // Custom Radio/Checkbox Indicator
+                    Container(
+                      width: 22,
+                      height: 22,
+                      decoration: BoxDecoration(
+                        shape: widget.isMultipleChoice ? BoxShape.rectangle : BoxShape.circle,
+                        borderRadius: widget.isMultipleChoice ? BorderRadius.circular(6) : null,
+                        border: Border.all(
+                          color: isSelected ? ColorManager.primeColor : ColorManager.hintColor,
+                          width: 2,
+                        ),
+                        color: isSelected ? ColorManager.primeColor : Colors.transparent,
+                      ),
+                      child: isSelected
+                          ? const Center(
+                              child: Icon(
+                                Icons.check,
+                                size: 14,
+                                color: Colors.white,
+                              ),
+                            )
+                          : null,
                     ),
-                    color: isSelected ? Colors.blue : null,
-                  ),
-                  child: isSelected
-                      ? Center(
-                          child: widget.isMultipleChoice
-                              ? const Icon(
-                                  Icons.check,
-                                  size: 16,
-                                  color: Colors.white,
-                                )
-                              : Container(
-                                  width: 12,
-                                  height: 12,
-                                  decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                        )
-                      : null,
+                    const SizedBox(width: 16),
+                    // Label
+                    Expanded(
+                      child: Text(
+                        option.label,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                          color: isSelected ? ColorManager.primeColor : ColorManager.blackColor,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    option.label,
-                    style: const TextStyle(fontSize: 18),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         );

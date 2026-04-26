@@ -9,29 +9,38 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ChangePasswordScreen extends StatelessWidget {
   const ChangePasswordScreen({super.key});
 
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => getIt<ChangePasswordCubit>(),
       child: Scaffold(
+        backgroundColor: const Color(0xffF8F9FB),
         appBar: AppBar(
-          backgroundColor: ColorManager.whiteColor,
+          backgroundColor: Colors.white,
           elevation: 0,
-          centerTitle: false,
-          titleSpacing: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.black),
-            onPressed: () => Navigator.of(context).pop(),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircleAvatar(
+              backgroundColor: ColorManager.primeColor.withValues(alpha: 0.1),
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new, color: ColorManager.primeColor, size: 18),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ),
           ),
-          title: const Padding(
-            padding: EdgeInsets.only(left: 8.0),
-            child: Text(
-              AppTextConstants.changePassword,
-              style: TextStyle(color: Colors.black),
+          title: const Text(
+            AppTextConstants.changePassword,
+            style: TextStyle(
+              color: ColorManager.blackColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
             ),
           ),
         ),
-        body: SafeArea(child: ChangePasswordBody()),
+        body: const SafeArea(child: ChangePasswordBody()),
       ),
     );
   }

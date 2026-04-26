@@ -26,6 +26,20 @@ abstract class AppValidators {
     return result;
   }
 
+  static String? nameValidation(String? value) {
+    String? result = fullNameValidator(value, 'Name is required');
+    if (result == null) {
+      if (value!.length < 3) {
+        return 'Name must be at least 3 characters';
+      }
+      final regex = RegExp(r'^[A-Za-z]+$');
+      if (!regex.hasMatch(value)) {
+        return 'Name must contain only letters (no spaces or symbols)';
+      }
+    }
+    return result;
+  }
+
   static String? passwordValidation(String? value) {
     String? result = fullNameValidator(value, AppTextConstants.enterPassword);
     if (result == null) {
