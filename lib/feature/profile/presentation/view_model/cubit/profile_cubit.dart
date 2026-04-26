@@ -32,11 +32,7 @@ class ProfileCubit extends Cubit<ProfileState> {
     this._secureStorage,
     this._hiveStorage,
   ) : super(ProfileState()) {
-    usernameController.addListener(_checkForChanges);
-    firstNameController.addListener(_checkForChanges);
-    lastNameController.addListener(_checkForChanges);
-    emailController.addListener(_checkForChanges);
-    phoneController.addListener(_checkForChanges);
+    _addListeners();
   }
 
   void _checkForChanges() {
@@ -94,15 +90,39 @@ class ProfileCubit extends Cubit<ProfileState> {
   void fillControllers(UserDataModel user, {bool force = false}) {
     if (!force && _lastLoadedUserId == user.id) return;
 
+    // Temporarily remove listeners to prevent infinite loop
+    _removeListeners();
+
     usernameController.text = user.username;
     firstNameController.text = user.firstName;
     lastNameController.text = user.lastName;
     emailController.text = user.email;
     phoneController.text = user.phone;
     _lastLoadedUserId = user.id;
-    
+
+    // Re-add listeners after updating text
+    _addListeners();
+
     // Ensure hasChanges is false after filling from source
-    emit(state.copyWith(hasChangesParam: false));
+    if (state.hasChanges || state.updateSuccess) {
+      emit(state.copyWith(hasChangesParam: false, updateSuccessParam: false));
+    }
+  }
+
+  void _addListeners() {
+    usernameController.addListener(_checkForChanges);
+    firstNameController.addListener(_checkForChanges);
+    lastNameController.addListener(_checkForChanges);
+    emailController.addListener(_checkForChanges);
+    phoneController.addListener(_checkForChanges);
+  }
+
+  void _removeListeners() {
+    usernameController.removeListener(_checkForChanges);
+    firstNameController.removeListener(_checkForChanges);
+    lastNameController.removeListener(_checkForChanges);
+    emailController.removeListener(_checkForChanges);
+    phoneController.removeListener(_checkForChanges);
   }
 
   Future<void> editProfile(EditProfileRequest request) async {

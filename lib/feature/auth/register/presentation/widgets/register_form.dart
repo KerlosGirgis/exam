@@ -1,7 +1,6 @@
 import 'package:exam/core/constant/app_text_constants.dart';
 import 'package:exam/core/utils/app_validation.dart';
 import 'package:exam/core/utils/color_manager.dart';
-import 'package:exam/core/utils/router/app_routes.dart';
 import 'package:exam/core/utils/widgets/custom_elevated_button.dart';
 import 'package:exam/feature/auth/register/presentation/viewModel/register_cubit.dart';
 import 'package:exam/feature/auth/register/presentation/viewModel/register_intent.dart';
@@ -226,7 +225,7 @@ class _RegisterFormState extends State<RegisterForm> {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.03),
+                color: Colors.black.withValues(alpha: 0.03),
                 blurRadius: 10,
                 offset: const Offset(0, 4),
               ),
