@@ -354,17 +354,19 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i198.RegisterUseCase>(
       () => _i198.RegisterUseCase(gh<_i628.RegisterRepoContract>()),
     );
-    gh.factory<_i784.ProfileCubit>(
-      () => _i784.ProfileCubit(
-        gh<_i736.GetUserProfileUseCase>(),
-        gh<_i36.EditProfileUseCase>(),
-      ),
-    );
     gh.factory<_i870.ExamSubjectCubit>(
       () => _i870.ExamSubjectCubit(gh<_i930.ExamSubjectUseCase>()),
     );
     gh.factory<_i1071.ResultsBloc>(
       () => _i1071.ResultsBloc(gh<_i987.GetSavedExamsUseCase>()),
+    );
+    gh.factory<_i784.ProfileCubit>(
+      () => _i784.ProfileCubit(
+        gh<_i736.GetUserProfileUseCase>(),
+        gh<_i36.EditProfileUseCase>(),
+        gh<_i108.SecureStorage>(),
+        gh<_i637.HiveStorageContract>(),
+      ),
     );
     gh.factory<_i583.RegisterCubit>(
       () => _i583.RegisterCubit(gh<_i198.RegisterUseCase>()),

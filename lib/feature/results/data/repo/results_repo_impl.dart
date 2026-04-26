@@ -67,7 +67,6 @@ class ResultsRepoImpl implements ResultsRepoContract {
           ));
         } catch (e) {
           // Skip individual failed records
-          print('Error parsing exam result $key: $e');
         }
       });
 

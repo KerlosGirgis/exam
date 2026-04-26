@@ -13,6 +13,9 @@ class ProfileState {
   final String? errorMessage1;
   final String? updateErrorMessage;
   final bool updateSuccess;
+  final bool hasChanges;
+  final bool isLoggingOut;
+  final bool logoutSuccess;
 
   ProfileState({
     BaseState<UserDataModel>? profileState,
@@ -22,6 +25,9 @@ class ProfileState {
     this.errorMessage1,
     this.updateErrorMessage,
     this.updateSuccess = false,
+    this.hasChanges = false,
+    this.isLoggingOut = false,
+    this.logoutSuccess = false,
   }) : profileState =
            profileState ??
            BaseState<UserDataModel>(isLoading: false);
@@ -34,6 +40,9 @@ class ProfileState {
     Object? errorMessageParam = _sentinel,
     Object? updateErrorMessageParam = _sentinel,
     bool? updateSuccessParam,
+    bool? hasChangesParam,
+    bool? isLoggingOutParam,
+    bool? logoutSuccessParam,
   }) {
     return ProfileState(
       profileState: profileStateParam ?? profileState,
@@ -49,6 +58,9 @@ class ProfileState {
           ? updateErrorMessage
           : updateErrorMessageParam as String?,
       updateSuccess: updateSuccessParam ?? updateSuccess,
+      hasChanges: hasChangesParam ?? hasChanges,
+      isLoggingOut: isLoggingOutParam ?? isLoggingOut,
+      logoutSuccess: logoutSuccessParam ?? logoutSuccess,
     );
   }
 }

@@ -91,7 +91,7 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
               content: Text(
                 cps!.data?.message ?? AppTextConstants.passwordChangedSuccess,
               ),
-              backgroundColor: ColorManager.primeColor,
+              backgroundColor: Colors.green,
             ),
           );
           Navigator.of(context).pop();
@@ -107,6 +107,7 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
         }
       },
       child: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.all(24),
         child: Form(
           key: _formKey,
@@ -115,47 +116,85 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
               ? AutovalidateMode.always
               : AutovalidateMode.disabled,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CustomTextfield(
-                labelText: AppTextConstants.currentPassword,
-                hintText: AppTextConstants.enterCurrentPassword,
-                controller: _currentPasswordController,
-                isPassword: true,
-                obscureText: true,
-                validator: AppValidators.passwordValidation,
-              ),
-              const SizedBox(height: 16),
-              CustomTextfield(
-                labelText: AppTextConstants.newPassword,
-                hintText: AppTextConstants.enterNewPassword,
-                controller: _newPasswordController,
-                isPassword: true,
-                obscureText: true,
-                validator: (v) {
-                  final base = AppValidators.passwordValidation(v);
-                  if (base != null) return base;
-                  if (v != null &&
-                      v.trim() ==
-                          _currentPasswordController.text.trim()) {
-                    return AppTextConstants.newPasswordSameAsOld;
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              CustomTextfield(
-                labelText: AppTextConstants.confirmNewPassword,
-                hintText: AppTextConstants.confirmNewPassword,
-                controller: _confirmPasswordController,
-                isPassword: true,
-                obscureText: true,
-                validator: (v) => AppValidators.passconfirmValidation(
-                  v,
-                  _newPasswordController,
+              const SizedBox(height: 10),
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: ColorManager.primeColor.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.lock_reset_rounded,
+                  size: 64,
+                  color: ColorManager.primeColor,
                 ),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(height: 24),
+              const Text(
+                'Reset Your Password',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: ColorManager.blackColor,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Please enter your current and new password below to update your security.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 14,
+                  color: ColorManager.greyColor,
+                ),
+              ),
+              const SizedBox(height: 40),
+              _buildFieldContainer(
+                child: CustomTextfield(
+                  labelText: AppTextConstants.currentPassword,
+                  hintText: AppTextConstants.enterCurrentPassword,
+                  controller: _currentPasswordController,
+                  isPassword: true,
+                  obscureText: true,
+                  validator: AppValidators.passwordValidation,
+                ),
+              ),
+              const SizedBox(height: 20),
+              _buildFieldContainer(
+                child: CustomTextfield(
+                  labelText: AppTextConstants.newPassword,
+                  hintText: AppTextConstants.enterNewPassword,
+                  controller: _newPasswordController,
+                  isPassword: true,
+                  obscureText: true,
+                  validator: (v) {
+                    final base = AppValidators.passwordValidation(v);
+                    if (base != null) return base;
+                    if (v != null &&
+                        v.trim() ==
+                            _currentPasswordController.text.trim()) {
+                      return AppTextConstants.newPasswordSameAsOld;
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(height: 20),
+              _buildFieldContainer(
+                child: CustomTextfield(
+                  labelText: AppTextConstants.confirmNewPassword,
+                  hintText: AppTextConstants.confirmNewPassword,
+                  controller: _confirmPasswordController,
+                  isPassword: true,
+                  obscureText: true,
+                  validator: (v) => AppValidators.passconfirmValidation(
+                    v,
+                    _newPasswordController,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 48),
               BlocBuilder<ChangePasswordCubit, ChangePasswordState>(
                 buildWhen: (prev, curr) =>
                     prev.changePasswordState?.isLoading !=
@@ -163,19 +202,41 @@ class _ChangePasswordBodyState extends State<ChangePasswordBody> {
                 builder: (context, state) {
                   final isLoading =
                       state.changePasswordState?.isLoading ?? false;
-                  return CustomButton(
-                    title: isLoading
-                        ? AppTextConstants.loading
-                        : AppTextConstants.update,
-                    onPressed: _onSubmit,
-                    isEnabled: _isFilled && !isLoading,
+                  return SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: CustomButton(
+                      title: isLoading
+                          ? AppTextConstants.loading
+                          : AppTextConstants.update,
+                      onPressed: _onSubmit,
+                      isEnabled: _isFilled && !isLoading,
+                    ),
                   );
                 },
               ),
+              const SizedBox(height: 24),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildFieldContainer({required Widget child}) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: child,
     );
   }
 }

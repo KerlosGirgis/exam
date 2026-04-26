@@ -18,55 +18,69 @@ class SubjectCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 90,
-        width: double.infinity,
-        margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: ColorManager.whiteBlueColor),
           boxShadow: [
             BoxShadow(
-              color: ColorManager.greyColor.withAlpha(60),
-              blurRadius: 8,
+              color: Colors.black.withValues(alpha: 0.04),
+              blurRadius: 10,
               offset: const Offset(0, 4),
             ),
           ],
         ),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Row(
-            children: [
-              hasIcon
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: ColorManager.whiteBlueColor.withValues(alpha: 0.3),
+                shape: BoxShape.circle,
+              ),
+              child: hasIcon
                   ? CachedNetworkImage(
                       imageUrl: iconUrl,
-                      height: 48,
-                      width: 48,
+                      height: 40,
+                      width: 40,
                       placeholder: (_, _) => const SizedBox(
-                        height: 48,
-                        width: 48,
+                        height: 40,
+                        width: 40,
                         child: Center(
-                          child: SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          ),
+                          child: CircularProgressIndicator(strokeWidth: 2),
                         ),
                       ),
-                      errorWidget: (_, _, _) => const Icon(Icons.image),
+                      errorWidget: (_, _, _) => const Icon(
+                        Icons.book,
+                        color: ColorManager.primeColor,
+                        size: 30,
+                      ),
                     )
-                  : const Icon(Icons.image),
-              const SizedBox(width: 10),
-              Text(
+                  : const Icon(
+                      Icons.book,
+                      color: ColorManager.primeColor,
+                      size: 30,
+                    ),
+            ),
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Text(
                 (subject?.name != null && subject!.name!.isNotEmpty)
                     ? subject!.name!
                     : AppTextConstants.unknown,
-                style: const TextStyle(fontSize: 16),
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: ColorManager.blackColor,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
